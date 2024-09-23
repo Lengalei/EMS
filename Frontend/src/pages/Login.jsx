@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 // import { TailSpin } from "react-loader-spinner";
 import "./Pages.scss";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../context/authContext.jsx"
-
+import { userContext } from "../context/authContext";
+// import useAuth from "../context/authContext.jsx"
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
-  const {login} = useAuth()
-  const navigate = useNavigate()
+  // const {login} = useAuth()
+  const { login } = useContext(userContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,12 +29,12 @@ function Login() {
 
       if (response.data.success) {
         // alert("Login successful");
-        login(response.data.user)
-        localStorage.setItem("token", response.data.token)
-        if (response.data.user.role ===200){
-          navigate('/admin-dashboard')
-        }else {
-          navigate ('/employee-dashboard')
+        login(response.data.user);
+        localStorage.setItem("token", response.data.token);
+        if (response.data.user.role === "Admin") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/employee-dashboard");
         }
       }
     } catch (error) {

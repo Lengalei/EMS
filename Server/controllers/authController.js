@@ -32,7 +32,7 @@ const login = async (req, res) => {
       user: {
         _id: user._id,
         name: user.name,
-        role: foundUser.role,
+        role: user.role,
       },
     });
   } catch (error) {
