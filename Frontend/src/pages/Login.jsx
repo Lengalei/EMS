@@ -1,14 +1,25 @@
 import React, { useState } from "react";
+import axios from 'axios'
 import "./Pages.scss";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handlesubmit = async(e)=>{
+    e.preventDefault()
+            try {
+                const response = await axios.post("https://localhost:3000/api/auth/login", {email,password});
+            } catch (error) {
+                console.log(error)
+            }
+    
+  }
   return (
     <div className="login">
       <h2>Employee Management system Login</h2>
 
-      <form className="login-container">
+      <form className="login-container" onSubmit={handlesubmit}>
         <h3>LOGIN</h3>
 
         <div className="input">
