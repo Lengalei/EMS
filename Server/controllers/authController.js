@@ -12,7 +12,11 @@ if (!foundUser){
     throw new error ('User not found')
 }
 
-const isValid = bycrypt.compare(password, foundUser.password)
+const isValid = await bycrypt.compare(password, foundUser.password)
+
+if(!isValid){
+    return res.status(404).json({success:false, message: "Invalid credentials"})
+}
     } catch (error) {
         res.status(500).json({message: 'Internal server error'})
     }
