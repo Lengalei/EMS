@@ -8,7 +8,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/admin-dashboard"/>} />
       <Route path="/login" element={<Login/>} />
-      <Route path="/admin dashboard" element={<AdminDashboard/>} />
+      <Route path="/admindashboard" element={<AdminDashboard/>} />
     </Routes>
    </Router>
   );
