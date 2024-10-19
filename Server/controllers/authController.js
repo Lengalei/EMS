@@ -5,14 +5,14 @@ import jwt from "jsonwebtoken";
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const foundUser = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email });
 
     // validating the email
-    if (!foundUser) {
+    if (!user) {
       throw new error("User not found");
     }
 
-    const isValid = await bycrypt.compare(password, foundUser.password);
+    const isValid = await bycrypt.compare(password, user.password);
 
     if (!isValid) {
       return res
@@ -21,7 +21,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { _id: foundUser._id, role: foundUser.role },
+      { _id: user._id, role: user.role },
       process.env.JWT_KEY,
       { expiresIn: "10d" }
     );
@@ -30,8 +30,8 @@ const login = async (req, res) => {
       success: true,
       token,
       user: {
-        _id: foundUser._id,
-        name: foundUser.name,
+        _id: user._id,
+        name: user.name,
         role: foundUser.role,
       },
     });
