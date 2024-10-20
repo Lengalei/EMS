@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext } from "react";
 
 // Create the userContext
-const userContext = createContext();
+export const userContext = createContext();
 
 // Define the AuthContext component
-const AuthContextProvider = ({ children }) => {
+
+export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (user) => {
@@ -24,6 +25,6 @@ const AuthContextProvider = ({ children }) => {
 };
 
 // Custom hook to use the auth context
-export const useAuth = () => useContext(userContext);
+// export const useAuth = () => useContext(userContext);
 
-export default AuthContextProvider;
+// export default AuthContextProvider;
