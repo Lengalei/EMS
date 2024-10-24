@@ -4,7 +4,7 @@ import { userContext } from "../context/authContext";
 
 function AdminDashboard() {
   const { user } = useContext(userContext);
-  return <div>AdminDashboard {user.name}</div>;
+  return <div>Admin Dashboard {user && user.name}</div>;
 }
 
 export default AdminDashboard;
