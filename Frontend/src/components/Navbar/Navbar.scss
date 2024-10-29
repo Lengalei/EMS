@@ -1,0 +1,21 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #008080;
+  color: white;
+  z-index: 1000;
+
+  &__welcome {
+    font-size: 20px;
+  }
+
+  &__logout {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+}

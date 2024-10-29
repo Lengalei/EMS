@@ -38,7 +38,7 @@ function Login() {
         }
       }
     } catch (error) {
-      if (error.response && !error.response.data.success) {
+      if (error.response && !error.response.data.error) {
         setError(error.response.data.error);
       } else {
         setError("server error" || message.error);

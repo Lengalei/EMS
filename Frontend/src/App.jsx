@@ -9,14 +9,14 @@ import AdminDashboard from "./pages/AdminDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
-// import { Layout, RequireAuth } from "./Routes/RequireAuth";
+import AdminSummary from "./components/Dashboard/AdminSummary";
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/admin-dashboard" />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/" element={<Layout />} /> */}
         <Route
           path="/admin-dashboard"
           element={
@@ -26,13 +26,11 @@ function App() {
               </RoleBaseRoutes>
             </PrivateRoutes>
           }
-        />
-
-        {/* <Route element={<RequireAuth />}> */}
-        <Route path="/" element={<Navigate to="/admin-dashboard" />} />
+        >
+          <Route index element={<AdminSummary />}></Route>
+        </Route>
 
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
-        {/* </Route> */}
       </Routes>
     </Router>
   );

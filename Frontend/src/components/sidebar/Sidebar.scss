@@ -1,0 +1,54 @@
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #2d3748;
+  color: #fff;
+  padding: 20px;
+  // position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+
+  &__logo {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #ffa62f;
+    text-align: center;
+  }
+
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  nav ul li {
+    margin: 15px 0;
+  }
+
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+  }
+
+  nav ul li a:hover {
+    background-color: #ffa62f;
+    color: #2d3748;
+  }
+
+  .sidebar__icon {
+    margin-right: 10px;
+    font-size: 1.3em;
+  }
+
+  /* Active Link Style */
+  .active {
+    background-color: #ffa62f;
+    color: #2d3748;
+  }
+}

@@ -7,13 +7,24 @@ const AdminSummary = () => (
   <div className="dashboard">
     <h1>Dashboard Overview</h1>
     <div className="dashboard__metrics">
-      <SummaryCard icon={<FaUsers />} text="Number of Employees" number={13} />
+      <SummaryCard icon={<FaUsers />} text="Number of Employees" number={30} />
+      <SummaryCard
+        icon={<FaUsers />}
+        text="Number of Departments"
+        number={10}
+        className="secondCard"
+      />
+      <SummaryCard
+        icon={<FaUsers />}
+        text="Total Monthly Salaries"
+        number={1780000}
+      />
     </div>
     <h2>Leave Details</h2>
     <div className="dashboard__leaves">
-      <div className="leave">Leave Applied: 2</div>
-      <div className="leave">Leave Approved: 2</div>
-      <div className="leave">Leave Rejected: 2</div>
+      <SummaryCard icon={<FaUsers />} text="Leaves Applied" number={1780000} />
+      <SummaryCard icon={<FaUsers />} text="Leaves Approved" number={1780000} />
+      <SummaryCard icon={<FaUsers />} text="Leaves Rejected" number={1780000} />
     </div>
   </div>
 );

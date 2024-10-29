@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 // Create the userContext
 export const userContext = createContext();
@@ -7,10 +8,36 @@ export const userContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
-    
-  })
+  useEffect(() => {
+    const verifyUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const response = await axios.get(
+            "http://localhost:3000/api/auth/verify",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.success) {
+            setUser(response.data.user);
+          }
+        } else {
+          setUser(null);
+          setLoading(false);
+        }
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    verifyUser();
+  }, []);
 
   const login = (user) => {
     setUser(user);
@@ -22,13 +49,13 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <userContext.Provider value={{ user, login, logout }}>
+    <userContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </userContext.Provider>
   );
 };
 
 // Custom hook to use the auth context
-// export const useAuth = () => useContext(userContext);
+export const useAuth = () => useContext(userContext);
 
-// export default AuthContextProvider;
+export default AuthContextProvider;
