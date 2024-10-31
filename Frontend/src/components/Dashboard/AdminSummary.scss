@@ -1,0 +1,17 @@
+.dashboard {
+  padding: 20px;
+
+  &__metrics,
+  &__leaves {
+    display: flex;
+    gap: 15px;
+  }
+
+  .metric,
+  .leave {
+    background-color: #f3f3f3;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 18px;
+  }
+}
