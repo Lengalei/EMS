@@ -22,9 +22,9 @@ const AdminSummary = () => (
     </div>
     <h2>Leave Details</h2>
     <div className="dashboard__leaves">
-      <SummaryCard icon={<FaUsers />} text="Leaves Applied" number={1780000} />
-      <SummaryCard icon={<FaUsers />} text="Leaves Approved" number={1780000} />
-      <SummaryCard icon={<FaUsers />} text="Leaves Rejected" number={1780000} />
+      <SummaryCard icon={<FaUsers />} text="Leaves Applied" number={4} />
+      <SummaryCard icon={<FaUsers />} text="Leaves Approved" number={3} />
+      <SummaryCard icon={<FaUsers />} text="Leaves Rejected" number={1} />
     </div>
   </div>
 );
