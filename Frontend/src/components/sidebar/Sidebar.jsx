@@ -29,7 +29,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/departments" activeClassName="active">
+            <NavLink to="/admin-dashboard/departments" activeClassName="active">
               <FaBuilding className="sidebar__icon" />
               Departments
             </NavLink>
