@@ -17,7 +17,7 @@ const Sidebar = () => {
       <nav>
         <ul>
           <li>
-            <NavLink to="/admin-dashboard" activeClassName="active">
+            <NavLink to="/admin-dashboard" activeClassName="active" end>
               <FaTachometerAlt className="sidebar__icon" />
               Dashboard
             </NavLink>
