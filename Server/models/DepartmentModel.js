@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const departmentSchema = new mongoose.Schema({
-  department: {
+  name: {
     type: String,
   },
   description: {
@@ -11,4 +11,4 @@ const departmentSchema = new mongoose.Schema({
 
 const Department = mongoose.model("department", departmentSchema);
 
-export default departmentSchema;
+export default Department;
