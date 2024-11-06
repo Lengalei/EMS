@@ -23,7 +23,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/employees" activeClassName="active">
+            <NavLink to="/admin-dashboard/employees" activeClassName="active">
               <FaUsers className="sidebar__icon" />
               Employees
             </NavLink>

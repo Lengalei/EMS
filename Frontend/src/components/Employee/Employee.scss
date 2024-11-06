@@ -1,0 +1,152 @@
+.employee-page {
+  padding: 20px;
+}
+
+.employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-employee-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-input {
+  margin: 20px 0;
+  padding: 8px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.employee-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.view-btn,
+.edit-btn,
+.salary-btn,
+.leave-btn {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.view-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: white;
+}
+
+.salary-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.leave-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.pagination .active a {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  margin: auto;
+  border-radius: 8px;
+  position: relative;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    margin-top: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:first-of-type {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    &:last-of-type {
+      background-color: #f44336;
+      color: white;
+    }
+  }
+}
