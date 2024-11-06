@@ -174,3 +174,33 @@
     transform: translateY(0);
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+
+  .page-item {
+    margin: 0 5px;
+    list-style-type: none;
+
+    .page-link {
+      padding: 5px 10px;
+      border: 1px solid #007bff;
+      color: #007bff;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #007bff;
+        color: #fff;
+      }
+    }
+
+    &.active .page-link {
+      background-color: #007bff;
+      color: #fff;
+    }
+  }
+}
