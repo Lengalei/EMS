@@ -29,7 +29,7 @@ const EmployeeProfile = () => {
     <div className="employee-profile">
       <div className="profile-header">
         <img
-          src={employee.image || "default-avatar.png"}
+          src={employee.image || "/default-avatar.jpg"}
           alt={employee.name}
           className="profile-image"
         />

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Employee from "../models/Employee.model.js";
 
 // Get all employees
@@ -10,6 +11,20 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
+// getting a single employee by id
+const getEmployeeById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+    const fetchedEmployee = await Employee.findById(id);
+
+    res.status(200).json(fetchedEmployee);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // getting employee by Department
 export const getEmployeesByDepartment = async (req, res) => {
   try {
@@ -37,12 +52,12 @@ const createEmployee = async (req, res) => {
 // Update an employee by ID
 const updateEmployee = async (req, res) => {
   const { id } = req.params;
-  const { name, dob, department } = req.body;
+  const { name, dob, department, email } = req.body;
 
   try {
     const employee = await Employee.findByIdAndUpdate(
       id,
-      { name, dob, department },
+      { name, dob, department, email },
       { new: true, runValidators: true }
     );
 
@@ -73,4 +88,10 @@ const deleteEmployee = async (req, res) => {
   }
 };
 
-export { getAllEmployees, createEmployee, updateEmployee, deleteEmployee };
+export {
+  getAllEmployees,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+  getEmployeeById,
+};
