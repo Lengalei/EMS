@@ -21,6 +21,9 @@ const createDepartment = async (req, res) => {
 const getAllDepartments = async (req, res) => {
   try {
     const allDepartments = await Department.find({});
+    // if (!allDepartments || allDepartments.length <= 0) {
+    //   res.status(400).json({ message: "No department found!" });
+    // }
 
     res.status(200).json(allDepartments);
   } catch (error) {
@@ -35,11 +38,6 @@ const updateDepartment = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // validation
-    if (!name || !description) {
-      return res.status(404).json({ message: "Fill in the required details" });
-    }
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "Invalid User!" });
     }
@@ -58,18 +56,12 @@ const updateDepartment = async (req, res) => {
 
 // delete a department
 const deleteDepartment = async (req, res) => {
-  const { name, description } = req.body;
   const { id } = req.params;
 
   try {
-    // validation
-    if (!name || !description) {
-      return res.status(404).json({ message: "Fill in the required details" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "Invalid User!" });
     }
-
-    // if (!mongoose.Types.ObjectId.isValid(id)) {
-    //   return res.status(404).json({ message: "Invalid User!" });
-    // }
 
     const deletedDepartment = await Department.findByIdAndDelete(id);
 
