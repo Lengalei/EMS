@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import ReactPaginate from "react-paginate";
 import "./Departments.scss";
+import "../../lib/apiRequest";
+import axios from "axios";
 
 const Departments = () => {
   const [departments, setDepartments] = useState([]);
@@ -20,7 +21,7 @@ const Departments = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/getAllDepartments"
+        "http://localhost:6500/api/department/getAllDepartments"
       );
       setDepartments(response.data);
     } catch (error) {
@@ -36,7 +37,7 @@ const Departments = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/createDepartment",
+        "http://localhost:6500/api/department/createDepartment",
         newDepartment
       );
       setDepartments([...departments, response.data]);
@@ -53,8 +54,29 @@ const Departments = () => {
   const handleDeleteDepartment = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:3000/api/deleteDepartment/${id}`);
-      setDepartments(departments.filter((dept) => dept._id !== id));
+      const response = await axios.delete(
+        `http://localhost:6500/api/department/deleteDepartment/${id}`
+      );
+      if (response.status) {
+        setDepartments(departments?.filter((dept) => dept._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting department:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // Update department
+  const handleUpdateDepartment = async (id) => {
+    setLoading(true);
+    try {
+      const response = await axios.put(
+        `http://localhost:6500/api/department/updateDepartment/${id}`
+      );
+      if (response.status) {
+        togglePopup();
+        setNewDepartment({ name: "", description: "" });
+      }
     } catch (error) {
       console.error("Error deleting department:", error);
     } finally {
@@ -76,17 +98,17 @@ const Departments = () => {
 
   // Filter and paginate departments
   const filteredDepartments = departments
-    .filter(
+    ?.filter(
       (dept) =>
         dept.name && dept.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .slice(
+    ?.slice(
       currentPage * departmentsPerPage,
       (currentPage + 1) * departmentsPerPage
     );
 
   const pageCount = Math.ceil(
-    departments.filter(
+    departments?.filter(
       (dept) =>
         dept.name && dept.name.toLowerCase().includes(searchTerm.toLowerCase())
     ).length / departmentsPerPage
@@ -125,7 +147,12 @@ const Departments = () => {
                 <td>{currentPage * departmentsPerPage + index + 1}</td>
                 <td>{dept.name}</td>
                 <td>
-                  <button className="edit-btn">Edit</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleUpdateDepartment(dept._id)}
+                  >
+                    Edit
+                  </button>
                   <button
                     className="delete-btn"
                     onClick={() => handleDeleteDepartment(dept._id)}
@@ -144,7 +171,6 @@ const Departments = () => {
           pageCount={pageCount}
           onPageChange={handlePageClick}
           containerClassName={"pagination"}
-          activeClassName={"active"}
         />
       </div>
 

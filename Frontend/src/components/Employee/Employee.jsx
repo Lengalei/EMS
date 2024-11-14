@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import "./Employee.scss";
+import "../../lib/apiRequest";
 
 Modal.setAppElement("#root"); // Set root element for accessibility
 
@@ -27,7 +28,9 @@ const Employee = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3000/api/employees");
+      const response = await axios.get(
+        "http://localhost:6500/api/employee/employees"
+      );
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -66,11 +69,15 @@ const Employee = () => {
     formData.append("image", newEmployee.image);
 
     try {
-      await axios.post("http://localhost:3000/api/postEmployee", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        "http://localhost:6500/api/employee/postEmployee",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       setNewEmployee({ name: "", dob: "", department: "", image: null });
       setIsModalOpen(false);
       await fetchEmployees(); // Ensure the list is refreshed after adding an employee
