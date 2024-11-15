@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import "./Departments.scss";
-import "../../lib/apiRequest";
 import axios from "axios";
 
 const Departments = () => {
@@ -12,6 +11,8 @@ const Departments = () => {
     name: "",
     description: "",
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editDepartmentId, setEditDepartmentId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const departmentsPerPage = 5;
@@ -31,20 +32,49 @@ const Departments = () => {
     }
   };
 
-  // Add new department
-  const handleAddDepartment = async (e) => {
+  // Open the popup and populate the form with department data for editing
+  const handleEditClick = (department) => {
+    setNewDepartment({
+      name: department.name,
+      description: department.description,
+    });
+    setEditDepartmentId(department._id);
+    setIsEditing(true);
+    setShowPopup(true);
+  };
+
+  // Add or update department
+  const handleSaveDepartment = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:6500/api/department/createDepartment",
-        newDepartment
-      );
-      setDepartments([...departments, response.data]);
+      if (isEditing && editDepartmentId) {
+        // Update department
+        const response = await axios.put(
+          `http://localhost:6500/api/department/updateDepartment/${editDepartmentId}`,
+          newDepartment
+        );
+        if (response.status === 200) {
+          setDepartments(
+            departments.map((dept) =>
+              dept._id === editDepartmentId ? response.data : dept
+            )
+          );
+        }
+      } else {
+        // Add new department
+        const response = await axios.post(
+          "http://localhost:6500/api/department/createDepartment",
+          newDepartment
+        );
+        setDepartments([...departments, response.data]);
+      }
       togglePopup();
       setNewDepartment({ name: "", description: "" });
+      setIsEditing(false);
+      setEditDepartmentId(null);
     } catch (error) {
-      console.error("Error adding department:", error);
+      console.error("Error saving department:", error);
     } finally {
       setLoading(false);
     }
@@ -57,25 +87,8 @@ const Departments = () => {
       const response = await axios.delete(
         `http://localhost:6500/api/department/deleteDepartment/${id}`
       );
-      if (response.status) {
-        setDepartments(departments?.filter((dept) => dept._id !== id));
-      }
-    } catch (error) {
-      console.error("Error deleting department:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  // Update department
-  const handleUpdateDepartment = async (id) => {
-    setLoading(true);
-    try {
-      const response = await axios.put(
-        `http://localhost:6500/api/department/updateDepartment/${id}`
-      );
-      if (response.status) {
-        togglePopup();
-        setNewDepartment({ name: "", description: "" });
+      if (response.status === 200) {
+        setDepartments(departments.filter((dept) => dept._id !== id));
       }
     } catch (error) {
       console.error("Error deleting department:", error);
@@ -86,6 +99,9 @@ const Departments = () => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+    setNewDepartment({ name: "", description: "" });
+    setIsEditing(false);
+    setEditDepartmentId(null);
   };
 
   const handlePageClick = ({ selected }) => {
@@ -98,17 +114,17 @@ const Departments = () => {
 
   // Filter and paginate departments
   const filteredDepartments = departments
-    ?.filter(
+    .filter(
       (dept) =>
         dept.name && dept.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    ?.slice(
+    .slice(
       currentPage * departmentsPerPage,
       (currentPage + 1) * departmentsPerPage
     );
 
   const pageCount = Math.ceil(
-    departments?.filter(
+    departments.filter(
       (dept) =>
         dept.name && dept.name.toLowerCase().includes(searchTerm.toLowerCase())
     ).length / departmentsPerPage
@@ -118,7 +134,10 @@ const Departments = () => {
     <div className="departments-page">
       <header className="departments-header">
         <h2>Manage Departments</h2>
-        <button className="add-department-btn" onClick={togglePopup}>
+        <button
+          className="add-department-btn"
+          onClick={() => setShowPopup(true)}
+        >
           Add New Department
         </button>
       </header>
@@ -149,7 +168,7 @@ const Departments = () => {
                 <td>
                   <button
                     className="edit-btn"
-                    onClick={() => handleUpdateDepartment(dept._id)}
+                    onClick={() => handleEditClick(dept)}
                   >
                     Edit
                   </button>
@@ -177,8 +196,8 @@ const Departments = () => {
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup-content">
-            <h3>Add New Department</h3>
-            <form onSubmit={handleAddDepartment}>
+            <h3>{isEditing ? "Edit Department" : "Add New Department"}</h3>
+            <form onSubmit={handleSaveDepartment}>
               <label>Department Name</label>
               <input
                 type="text"
@@ -202,7 +221,7 @@ const Departments = () => {
                 required
               ></textarea>
               <button type="submit" className="submit-btn">
-                Add Department
+                {isEditing ? "Update Department" : "Add Department"}
               </button>
               <button type="button" className="close-btn" onClick={togglePopup}>
                 Close

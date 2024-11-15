@@ -12,6 +12,7 @@ import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/Dashboard/AdminSummary";
 import Departments from "./components/Departments/Departments";
 import Employee from "./components/Employee/Employee";
+import SalaryForm from "./components/Salary/SalaryForm";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             element={<Departments />}
           />
           <Route path="/admin-dashboard/employees" element={<Employee />} />
+          <Route path="/admin-dashboard/salary" element={<SalaryForm />} />
         </Route>
 
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
