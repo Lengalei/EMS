@@ -3,7 +3,6 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import "./Employee.scss";
-import "../../lib/apiRequest";
 
 Modal.setAppElement("#root"); // Set root element for accessibility
 
@@ -13,11 +12,13 @@ const Employee = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
     name: "",
     dob: "",
     department: "",
-    image: null,
+    email: "",
+    password: "",
   });
   const employeesPerPage = 5;
 
@@ -62,32 +63,60 @@ const Employee = () => {
 
   const handleAddEmployee = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", newEmployee.name);
-    formData.append("dob", newEmployee.dob);
-    formData.append("department", newEmployee.department);
-    formData.append("image", newEmployee.image);
-
     try {
       await axios.post(
         "http://localhost:6500/api/employee/postEmployee",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        newEmployee
       );
-      setNewEmployee({ name: "", dob: "", department: "", image: null });
+      setNewEmployee({
+        name: "",
+        dob: "",
+        department: "",
+        email: "",
+        password: "",
+      });
       setIsModalOpen(false);
-      await fetchEmployees(); // Ensure the list is refreshed after adding an employee
+      await fetchEmployees(); // Refresh the list after adding
     } catch (error) {
       console.error("Error adding employee:", error);
     }
   };
 
-  const handleImageChange = (e) => {
-    setNewEmployee({ ...newEmployee, image: e.target.files[0] });
+  const handleEditEmployee = (employee) => {
+    setEditingEmployee(employee);
+    setNewEmployee(employee);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateEmployee = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `http://localhost:6500/api/employees/updateEmployee/${editingEmployee._id}`,
+        newEmployee
+      );
+      setEditingEmployee(null);
+      setNewEmployee({
+        name: "",
+        dob: "",
+        department: "",
+      });
+      setIsModalOpen(false);
+      await fetchEmployees(); // Refresh the list after updating
+    } catch (error) {
+      console.error("Error updating employee:", error);
+    }
+  };
+
+  const handleDeleteEmployee = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:6500/api/employee/deleteEmployee/${id}`
+      );
+      await fetchEmployees(); // Refresh the list after deleting
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
   };
 
   return (
@@ -96,7 +125,17 @@ const Employee = () => {
         <h2>Manage Employees</h2>
         <button
           className="add-employee-btn"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            setIsModalOpen(true);
+            setEditingEmployee(null);
+            setNewEmployee({
+              name: "",
+              dob: "",
+              department: "",
+              email: "",
+              password: "",
+            });
+          }}
         >
           Add New Employee
         </button>
@@ -116,7 +155,6 @@ const Employee = () => {
         <thead>
           <tr>
             <th>S No</th>
-            <th>Image</th>
             <th>Name</th>
             <th>DOB</th>
             <th>Department</th>
@@ -127,20 +165,23 @@ const Employee = () => {
           {displayedEmployees.map((employee, index) => (
             <tr key={employee._id}>
               <td>{currentPage * employeesPerPage + index + 1}</td>
-              <td>
-                <img
-                  src={employee.image}
-                  alt={employee.name}
-                  className="employee-image"
-                />
-              </td>
               <td>{employee.name}</td>
-              <td>{new Date(employee.dob).toLocaleDateString()}</td>{" "}
-              {/* Format date */}
+              <td>{new Date(employee.dob).toLocaleDateString()}</td>
               <td>{employee.department}</td>
               <td>
                 <button className="view-btn">View</button>
-                <button className="edit-btn">Edit</button>
+                <button
+                  className="edit-btn"
+                  onClick={() => handleEditEmployee(employee)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDeleteEmployee(employee._id)}
+                >
+                  Delete
+                </button>
                 <button className="salary-btn">Salary</button>
                 <button className="leave-btn">Leave</button>
               </td>
@@ -164,8 +205,11 @@ const Employee = () => {
         className="modal"
         overlayClassName="modal-overlay"
       >
-        <h3>Add New Employee</h3>
-        <form onSubmit={handleAddEmployee} className="modal-form">
+        <h3>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h3>
+        <form
+          onSubmit={editingEmployee ? handleUpdateEmployee : handleAddEmployee}
+          className="modal-form"
+        >
           <label>Name</label>
           <input
             type="text"
@@ -193,14 +237,27 @@ const Employee = () => {
             }
             required
           />
-          <label>Image</label>
+          <label>Email</label>
           <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
+            type="email"
+            value={newEmployee.email}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, email: e.target.value })
+            }
             required
           />
-          <button type="submit">Add Employee</button>
+          <label>Password</label>
+          <input
+            type="text"
+            value={newEmployee.password}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, password: e.target.value })
+            }
+            required
+          />
+          <button type="submit">
+            {editingEmployee ? "Update Employee" : "Add Employee"}
+          </button>
           <button type="button" onClick={() => setIsModalOpen(false)}>
             Close
           </button>
