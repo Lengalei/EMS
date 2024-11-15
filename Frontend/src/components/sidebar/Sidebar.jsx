@@ -41,7 +41,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/salary" activeClassName="active">
+            <NavLink to="/admin-dashboard/salary" activeClassName="active">
               <FaMoneyBillWave className="sidebar__icon" />
               Salary
             </NavLink>
