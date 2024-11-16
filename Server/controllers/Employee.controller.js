@@ -10,8 +10,7 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
-
-
+// getting employee by Department
 export const getEmployeesByDepartment = async (req, res) => {
   try {
     const employees = await Employee.find({
