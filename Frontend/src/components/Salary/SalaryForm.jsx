@@ -1,6 +1,7 @@
 // SalaryForm.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./SalaryForm.scss";
 
 const SalaryForm = () => {
@@ -14,13 +15,14 @@ const SalaryForm = () => {
     deductions: "",
     payDate: "",
   });
+  const navigate = useNavigate();
 
+  // Fetch departments on component mount
   useEffect(() => {
-    // Fetch departments
     const fetchDepartments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:6500/api/salary/departments"
+          "http://localhost:6500/api/department/getAllDepartments"
         );
         setDepartments(response.data);
       } catch (error) {
@@ -31,13 +33,13 @@ const SalaryForm = () => {
     fetchDepartments();
   }, []);
 
-  // Fetch employees when a department is selected
+  // Fetch employees whenever a department is selected
   useEffect(() => {
     if (selectedDepartment) {
       const fetchEmployees = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:6500/api/salary/employees/${selectedDepartment}`
+            `http://localhost:6500/api/employee/employees`
           );
           setEmployees(response.data);
         } catch (error) {
@@ -60,19 +62,12 @@ const SalaryForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:6500/api/salary/addSalary", {
+      await axios.post("http://localhost:6500/api/salaries/add", {
         employee: selectedEmployee,
         ...salaryData,
       });
       alert("Salary added successfully");
-      setSalaryData({
-        basicSalary: "",
-        allowances: "",
-        deductions: "",
-        payDate: "",
-      });
-      setSelectedDepartment("");
-      setSelectedEmployee("");
+      navigate("/admin-dashboard/salary-table"); // Redirect to the salary table page
     } catch (error) {
       console.error("Error adding salary:", error);
       alert("Failed to add salary");
@@ -119,7 +114,6 @@ const SalaryForm = () => {
           value={salaryData.basicSalary}
           onChange={handleInputChange}
           required
-          placeholder="Insert Salary"
         />
 
         <label>Allowances</label>
@@ -128,7 +122,6 @@ const SalaryForm = () => {
           name="allowances"
           value={salaryData.allowances}
           onChange={handleInputChange}
-          placeholder="Monthly Allowances"
         />
 
         <label>Deductions</label>
@@ -137,7 +130,6 @@ const SalaryForm = () => {
           name="deductions"
           value={salaryData.deductions}
           onChange={handleInputChange}
-          placeholder="Monthly Deductions"
         />
 
         <label>Pay Date</label>
