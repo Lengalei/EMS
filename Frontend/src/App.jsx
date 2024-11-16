@@ -13,6 +13,7 @@ import AdminSummary from "./components/Dashboard/AdminSummary";
 import Departments from "./components/Departments/Departments";
 import Employee from "./components/Employee/Employee";
 import SalaryForm from "./components/Salary/SalaryForm";
+import SalaryTable from "./components/Salary/SalaryTable";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
           />
           <Route path="/admin-dashboard/employees" element={<Employee />} />
           <Route path="/admin-dashboard/salary" element={<SalaryForm />} />
+          <Route
+            path="/admin-dashboard/salary-table"
+            element={<SalaryTable />}
+          />
         </Route>
 
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
