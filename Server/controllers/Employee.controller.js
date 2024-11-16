@@ -10,6 +10,19 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
+
+
+export const getEmployeesByDepartment = async (req, res) => {
+  try {
+    const employees = await Employee.find({
+      department: req.params.departmentId,
+    });
+    res.json(employees);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Create a new employee
 const createEmployee = async (req, res) => {
   const { name, dob, department, email, password } = req.body; // Removed 'image'
