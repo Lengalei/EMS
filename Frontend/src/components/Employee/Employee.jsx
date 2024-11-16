@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import "./Employee.scss";
+import { Link } from "react-router-dom";
 
 Modal.setAppElement("#root"); // Set root element for accessibility
 
@@ -169,7 +170,10 @@ const Employee = () => {
               <td>{new Date(employee.dob).toLocaleDateString()}</td>
               <td>{employee.department}</td>
               <td>
-                <button className="view-btn">View</button>
+                <Link to={`/admin-dashboard/employee-profile/${employee._id}`}>
+                  {" "}
+                  <button className="view-btn">View</button>
+                </Link>
                 <button
                   className="edit-btn"
                   onClick={() => handleEditEmployee(employee)}
