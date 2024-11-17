@@ -39,7 +39,7 @@ const EmployeeProfile = () => {
             <strong>Department:</strong> {employee.department}
           </p>
           <p>
-            <strong>Email:</strong> {employee.email}
+            <strong>Email:</strong> {employee.email || "example@gmail.com"}
           </p>
           <p>
             <strong>Phone:</strong> {employee.phone}
