@@ -9,7 +9,7 @@ const login = async (req, res) => {
 
     // validating the email
     if (!user) {
-      throw new error("User not found");
+      throw new Error("User not found");
     }
 
     const isValid = await bycrypt.compare(password, user.password);
