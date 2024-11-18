@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
-import Employee from "../models/Employee.model.js";
+import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Get all employees
 const getAllEmployees = async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const employees = await User.find({ role: "Employee" });
     res.json(employees);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -18,7 +20,7 @@ const getEmployeeById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "Employee not found" });
     }
-    const fetchedEmployee = await Employee.findById(id);
+    const fetchedEmployee = await User.findById(id);
 
     res.status(200).json(fetchedEmployee);
   } catch (error) {
@@ -28,7 +30,7 @@ const getEmployeeById = async (req, res) => {
 // getting employee by Department
 export const getEmployeesByDepartment = async (req, res) => {
   try {
-    const employees = await Employee.find({
+    const employees = await User.find({
       department: req.params.departmentId,
     });
     res.json(employees);
@@ -41,7 +43,16 @@ export const getEmployeesByDepartment = async (req, res) => {
 const createEmployee = async (req, res) => {
   const { name, dob, department, email, password } = req.body; // Removed 'image'
   try {
-    const employee = new Employee({ name, dob, department, email, password });
+    // hashed password
+    const hashedPass = await bcrypt.hash(password, 10);
+    const employee = new User({
+      name,
+      dob,
+      department,
+      email,
+      password: hashedPass,
+      role: "Employee",
+    });
     await employee.save();
     res.json(employee);
   } catch (error) {
@@ -55,7 +66,7 @@ const updateEmployee = async (req, res) => {
   const { name, dob, department, email } = req.body;
 
   try {
-    const employee = await Employee.findByIdAndUpdate(
+    const employee = await User.findByIdAndUpdate(
       id,
       { name, dob, department, email },
       { new: true, runValidators: true }
@@ -76,7 +87,7 @@ const deleteEmployee = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const employee = await Employee.findByIdAndDelete(id);
+    const employee = await User.findByIdAndDelete(id);
 
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });
