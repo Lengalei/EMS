@@ -1,9 +1,19 @@
-import React from 'react'
+import React from "react";
+import EmpSidebar from "../components/EmployeeDashboard/EmpSidebar";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar/Navbar";
 
 function EmployeeDashboard() {
   return (
-    <div>EmployeeDashboard</div>
-  )
+    <div className="admindashboard">
+      <EmpSidebar />
+
+      <div className="admin">
+        <Navbar />
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
-export default EmployeeDashboard
+export default EmployeeDashboard;
