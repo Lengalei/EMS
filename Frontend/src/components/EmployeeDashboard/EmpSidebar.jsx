@@ -2,36 +2,35 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
-  FaUsers,
-  FaBuilding,
+  FaUser,
   FaCalendarAlt,
   FaMoneyBillWave,
   FaCog,
 } from "react-icons/fa";
 import "../sidebar/Sidebar.scss";
+import { useAuth } from "../../context/authContext";
 
 const EmpSidebar = () => {
+  const { user} = useAuth();
+  console.log(user)
   return (
     <aside className="sidebar">
       <h2 className="sidebar__logo">Employee MS</h2>
       <nav>
         <ul>
           <li>
-            <NavLink to="/admin-dashboard" activeClassName="active" end>
+            <NavLink to="/employee-dashboard" activeClassName="active" end>
               <FaTachometerAlt className="sidebar__icon" />
               Dashboard
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin-dashboard/employees" activeClassName="active">
-              <FaUsers className="sidebar__icon" />
-              Employees
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/admin-dashboard/departments" activeClassName="active">
-              <FaBuilding className="sidebar__icon" />
-              Departments
+            <NavLink
+              to={`/employee-dashboard/employee-profile/${user._id}`}
+              activeClassName="active"
+            >
+              <FaUser className="sidebar__icon" />
+              My profile
             </NavLink>
           </li>
           <li>
@@ -41,7 +40,7 @@ const EmpSidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin-dashboard/salary" activeClassName="active">
+            <NavLink to="/employee-dashboard/salary" activeClassName="active">
               <FaMoneyBillWave className="sidebar__icon" />
               Salary
             </NavLink>
