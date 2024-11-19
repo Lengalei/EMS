@@ -15,6 +15,8 @@ import Employee from "./components/Employee/Employee";
 import SalaryForm from "./components/Salary/SalaryForm";
 import SalaryTable from "./components/Salary/SalaryTable";
 import EmployeeProfile from "./components/Employee/EmployeeProfile";
+import EmpSummary from "./components/EmployeeDashboard/EmpSummary";
+import EmpProfile from "./components/EmployeeDashboard/EmpProfile";
 
 function App() {
   return (
@@ -58,7 +60,13 @@ function App() {
               </RoleBaseRoutes>
             </PrivateRoutes>
           }
-        />
+        >
+          <Route index element={<EmpSummary />}></Route>
+          <Route
+            path="/employee-dashboard/employee-profile/:id"
+            element={<EmpProfile />}
+          />
+        </Route>
       </Routes>
     </Router>
   );
