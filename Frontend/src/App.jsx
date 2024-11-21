@@ -17,6 +17,7 @@ import SalaryTable from "./components/Salary/SalaryTable";
 import EmployeeProfile from "./components/Employee/EmployeeProfile";
 import EmpSummary from "./components/EmployeeDashboard/EmpSummary";
 import EmpProfile from "./components/EmployeeDashboard/EmpProfile";
+import EmpSalaryTable from "./components/Salary/EmpSalaryTable";
 
 function App() {
   return (
@@ -48,6 +49,10 @@ function App() {
           <Route
             path="/admin-dashboard/salary-table"
             element={<SalaryTable />}
+          />
+          <Route
+            path="/admin-dashboard/salaries/:employeeId"
+            element={<EmpSalaryTable />}
           />
         </Route>
 
