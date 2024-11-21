@@ -44,6 +44,19 @@ export const getSalaryById = async (req, res) => {
   }
 };
 
+export const getSalaryForEmployee = async (req, res) => {
+  const { employeeId } = req.params;
+  try {
+    const salaries = await Salary.find({ employee: employeeId }).populate(
+      "employee"
+    );
+
+    res.status(200).json(salaries);
+  } catch (error) {
+    res.status(500).json({ message: error.message || "server error" });
+  }
+};
+
 // Update salary by ID
 export const updateSalary = async (req, res) => {
   const { basicSalary, allowances, deductions, payDate } = req.body;
