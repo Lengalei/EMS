@@ -1,0 +1,77 @@
+.salary-table-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center; // Center the heading
+  }
+
+  .add-salary-btn {
+    margin: 20px auto;
+    display: block; // Center the button horizontally
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .salary-table {
+    width: 80%; // Reduce table width to fit content
+    margin: 0 auto; // Center the table horizontally
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th {
+      background-color: #f4f4f4;
+      color: #333;
+      font-weight: bold;
+      text-align: left;
+      padding: 10px;
+      border-bottom: 2px solid #ddd;
+      text-align: center; // Align text in headers to the center
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: center; // Align text in cells to the center
+    }
+
+    tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    tbody tr {
+      &:last-child td {
+        border-bottom: none; // Remove bottom border for last row
+      }
+    }
+
+    // Ensure proper alignment
+    th,
+    td {
+      &:nth-child(5) {
+        font-weight: bold;
+        color: #28a745;
+      }
+    }
+  }
+
+  .loader {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    margin-top: 20px;
+  }
+}
