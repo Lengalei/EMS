@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
-import Modal from 'react-modal';
-import './Employee.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import LeaveRequestForm from './LeaveRequest/LeaveRequestForm';
-import apiRequest from '../../lib/apiRequest';
+import { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
+import Modal from "react-modal";
+import "./Employee.scss";
+import { Link, useNavigate } from "react-router-dom";
+import LeaveRequestForm from "./LeaveRequest/LeaveRequestForm";
+import apiRequest from "../../lib/apiRequest";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
-    name: '',
-    dob: '',
-    department: '',
-    email: '',
-    password: '',
+    name: "",
+    dob: "",
+    department: "",
+    email: "",
+    password: "",
   });
   const employeesPerPage = 5;
   const navigate = useNavigate();
@@ -32,10 +32,10 @@ const Employee = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const response = await apiRequest.get('/employee/employees');
+      const response = await apiRequest.get("/employee/employees");
       setEmployees(response.data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error("Error fetching employees:", error);
     } finally {
       setLoading(false);
     }
@@ -76,6 +76,64 @@ const Employee = () => {
   const closeLeaveRequest = () => {
     setRequestLeave(false);
   };
+
+  const handleAddEmployee = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:6500/api/employee/postEmployee",
+        newEmployee
+      );
+      setNewEmployee({
+        name: "",
+        dob: "",
+        department: "",
+        email: "",
+        password: "",
+      });
+      setIsModalOpen(false);
+      await fetchEmployees(); // Refresh the list after adding
+    } catch (error) {
+      console.error("Error adding employee:", error);
+    }
+  };
+
+  const handleEditEmployee = (employee) => {
+    setEditingEmployee(employee);
+    setNewEmployee(employee);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateEmployee = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `http://localhost:6500/api/employees/updateEmployee/${editingEmployee._id}`,
+        newEmployee
+      );
+      setEditingEmployee(null);
+      setNewEmployee({
+        name: "",
+        dob: "",
+        department: "",
+      });
+      setIsModalOpen(false);
+      await fetchEmployees(); // Refresh the list after updating
+    } catch (error) {
+      console.error("Error updating employee:", error);
+    }
+  };
+
+  const handleDeleteEmployee = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:6500/api/employee/deleteEmployee/${id}`
+      );
+      await fetchEmployees(); // Refresh the list after deleting
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
+  };
   return (
     <div className="employee-page">
       <header className="employee-header">
@@ -86,11 +144,11 @@ const Employee = () => {
             setIsModalOpen(true);
             setEditingEmployee(null);
             setNewEmployee({
-              name: '',
-              dob: '',
-              department: '',
-              email: '',
-              password: '',
+              name: "",
+              dob: "",
+              department: "",
+              email: "",
+              password: "",
             });
           }}
         >
@@ -160,12 +218,12 @@ const Employee = () => {
       </table>
 
       <ReactPaginate
-        previousLabel={'Previous'}
-        nextLabel={'Next'}
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
         pageCount={Math.ceil(filteredEmployees.length / employeesPerPage)}
         onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        activeClassName={'active'}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
       />
 
       {requestLeave && (
@@ -174,6 +232,71 @@ const Employee = () => {
           onclose={closeLeaveRequest}
         />
       )}
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        className="modal"
+        overlayClassName="modal-overlay"
+      >
+        <h3>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h3>
+        <form
+          onSubmit={editingEmployee ? handleUpdateEmployee : handleAddEmployee}
+          className="modal-form"
+        >
+          <label>Name</label>
+          <input
+            type="text"
+            value={newEmployee.name}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, name: e.target.value })
+            }
+            required
+          />
+          <label>DOB</label>
+          <input
+            type="date"
+            value={newEmployee.dob}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, dob: e.target.value })
+            }
+            required
+          />
+          <label>Department</label>
+          <input
+            type="text"
+            value={newEmployee.department}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, department: e.target.value })
+            }
+            required
+          />
+          <label>Email</label>
+          <input
+            type="email"
+            value={newEmployee.email}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, email: e.target.value })
+            }
+            required
+          />
+          <label>Password</label>
+          <input
+            type="text"
+            value={newEmployee.password}
+            onChange={(e) =>
+              setNewEmployee({ ...newEmployee, password: e.target.value })
+            }
+            required
+          />
+          <button type="submit">
+            {editingEmployee ? "Update Employee" : "Add Employee"}
+          </button>
+          <button type="button" onClick={() => setIsModalOpen(false)}>
+            Close
+          </button>
+        </form>
+      </Modal>
     </div>
   );
 };
