@@ -1,19 +1,16 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-// import { TailSpin } from "react-loader-spinner";
-import './Pages.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import { userContext } from '../context/authContext';
 import { TailSpin } from 'react-loader-spinner';
-// import useAuth from "../context/authContext.jsx"
+import './register.scss';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
+function Register() {
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setloading] = useState(false);
   const [error, setError] = useState(null);
   // const {login} = useAuth()
-  const { login } = useContext(userContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,22 +18,16 @@ function Login() {
     setloading(true);
     try {
       const response = await axios.post(
-        'http://localhost:6500/api/auth/login',
+        'http://localhost:6500/api/auth/register',
         {
+          userName,
           email,
           password,
         }
       );
 
-      if (response.data.success) {
-        // alert("Login successful");
-        login(response.data.user);
-        localStorage.setItem('token', response.data.token);
-        if (response.data.user.role === 'Admin') {
-          navigate('/admin-dashboard');
-        } else {
-          navigate('/employee-dashboard');
-        }
+      if (response.status) {
+        navigate('/login');
       }
     } catch (error) {
       if (error.response && !error.response.data.error) {
@@ -54,12 +45,24 @@ function Login() {
   // }
 
   return (
-    <div className="login">
+    <div className="register">
       <h2>Employee Management system Login</h2>
 
-      <form className="login-container" onSubmit={handleSubmit}>
-        <h3>LOGIN</h3>
+      <form className="register-container" onSubmit={handleSubmit}>
+        <h3>Register</h3>
         {error && <p className="error">{error}</p>}
+        <div className="input">
+          <label>UserName</label>
+          <input
+            type="userName"
+            placeholder="Enter your userName"
+            value={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
+        </div>
+
         <div className="input">
           <label>Email</label>
           <input
@@ -83,12 +86,11 @@ function Login() {
             }}
           />
         </div>
-        <h6>
-          Don{"'"}t have an Account?{' '}
-          <Link to={'/register'} className="forgot-password-link">
-            Sign Up
-          </Link>
-        </h6>
+        <span>
+          <h6>
+            Already Have an Account? <Link to={'/login'}>Login</Link>
+          </h6>
+        </span>
         <button className="LoginBtn">Login</button>
       </form>
       {loading && (
@@ -106,4 +108,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

@@ -1,0 +1,94 @@
+.register {
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  z-index: -100;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('/employees.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .register-container {
+    width: 350px;
+    height: 400px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 10px var(--primary-color);
+    border: 1.5px solid #315d7d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    // opacity: 0.8;
+    gap: 20px;
+    border-radius: 15px;
+    color: white;
+  }
+  .input {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  input {
+    width: 150px;
+    height: 20px;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid rgb(49, 93, 125);
+    text-align: center;
+  }
+  .reset {
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+  }
+  #checkbox {
+    width: 20px;
+    height: 20px;
+  }
+  .forgot-password-link:hover {
+    cursor: pointer;
+    color: crimson;
+  }
+  .LoginBtn {
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    background-color: rgba(10, 10, 10, 0.5);
+    border: 1px solid rgb(49, 93, 125);
+    font-size: 20px;
+    color: var(--primary-color);
+    font-weight: 1000;
+    transition: all 300ms ease-in-out;
+  }
+  .LoginBtn:hover {
+    background-color: coral;
+    cursor: pointer;
+  }
+
+  .error {
+    color: red;
+  }
+  .loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1500; /* Ensures it's on top of everything */
+  }
+}

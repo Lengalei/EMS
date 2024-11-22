@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import ReactPaginate from "react-paginate";
-import Modal from "react-modal";
-import "./Employee.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import ReactPaginate from 'react-paginate';
+import Modal from 'react-modal';
+import './Employee.scss';
+import { Link, useNavigate } from 'react-router-dom';
+import LeaveRequestForm from './LeaveRequest/LeaveRequestForm';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
-    name: "",
-    dob: "",
-    department: "",
-    email: "",
-    password: "",
+    name: '',
+    dob: '',
+    department: '',
+    email: '',
+    password: '',
   });
   const employeesPerPage = 5;
   const navigate = useNavigate();
@@ -32,11 +33,11 @@ const Employee = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:6500/api/employee/employees"
+        'http://localhost:6500/api/employee/employees'
       );
       setEmployees(response.data);
     } catch (error) {
-      console.error("Error fetching employees:", error);
+      console.error('Error fetching employees:', error);
     } finally {
       setLoading(false);
     }
@@ -67,6 +68,16 @@ const Employee = () => {
     (currentPage + 1) * employeesPerPage
   );
 
+  const [requestLeave, setRequestLeave] = useState(false);
+  const [selectedEmployee, setSelctedEmployee] = useState(false);
+  const handleEmployeeLeave = (employee) => {
+    setSelctedEmployee(employee);
+    setRequestLeave(true);
+  };
+
+  const closeLeaveRequest = () => {
+    setRequestLeave(false);
+  };
   return (
     <div className="employee-page">
       <header className="employee-header">
@@ -77,11 +88,11 @@ const Employee = () => {
             setIsModalOpen(true);
             setEditingEmployee(null);
             setNewEmployee({
-              name: "",
-              dob: "",
-              department: "",
-              email: "",
-              password: "",
+              name: '',
+              dob: '',
+              department: '',
+              email: '',
+              password: '',
             });
           }}
         >
@@ -138,7 +149,12 @@ const Employee = () => {
                 >
                   Salary
                 </button>
-                <button className="leave-btn">Leave</button>
+                <button
+                  className="leave-btn"
+                  onClick={() => handleEmployeeLeave(employee)}
+                >
+                  Leave
+                </button>
               </td>
             </tr>
           ))}
@@ -146,13 +162,20 @@ const Employee = () => {
       </table>
 
       <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
+        previousLabel={'Previous'}
+        nextLabel={'Next'}
         pageCount={Math.ceil(filteredEmployees.length / employeesPerPage)}
         onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
       />
+
+      {requestLeave && (
+        <LeaveRequestForm
+          selectedEmployee={selectedEmployee}
+          onclose={closeLeaveRequest}
+        />
+      )}
     </div>
   );
 };

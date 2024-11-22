@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   FaTachometerAlt,
   FaUsers,
@@ -7,8 +7,8 @@ import {
   FaCalendarAlt,
   FaMoneyBillWave,
   FaCog,
-} from "react-icons/fa";
-import "./Sidebar.scss";
+} from 'react-icons/fa';
+import './Sidebar.scss';
 
 const Sidebar = () => {
   return (
@@ -50,6 +50,15 @@ const Sidebar = () => {
             <NavLink to="/settings" activeClassName="active">
               <FaCog className="sidebar__icon" />
               Settings
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/admin-dashboard/employees/LeaveRequestsAdmin"
+              activeClassName="active"
+            >
+              <FaCog className="sidebar__icon" />
+              Leave Requests
             </NavLink>
           </li>
         </ul>
