@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './SalaryTable.scss';
-import apiRequest from '../../lib/apiRequest';
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./SalaryTable.scss";
+import apiRequest from "../../lib/apiRequest";
+import { useAuth } from "../../context/authContext";
 
 const EmpSalaryTable = () => {
   const { employeeId } = useParams();
@@ -23,7 +24,7 @@ const EmpSalaryTable = () => {
       const response = await apiRequest.get(`/salaries/salaries/${employeeId}`);
       setSalaries(response.data);
     } catch (error) {
-      console.error('Error fetching salaries:', error);
+      console.error("Error fetching salaries:", error);
     } finally {
       setLoading(false);
     }
@@ -34,30 +35,28 @@ const EmpSalaryTable = () => {
       const response = await apiRequest.get(`/employee/${employeeId}`);
       setEmployeeDetails(response.data);
     } catch (error) {
-      console.error('Error fetching employee details:', error);
+      console.error("Error fetching employee details:", error);
     }
   };
 
   const fetchDepartments = async () => {
     try {
-      const response = await apiRequest.get('/department/getAllDepartments');
+      const response = await apiRequest.get("/department/getAllDepartments");
       setDepartments(response.data);
     } catch (error) {
-      console.error('Error fetching departments:', error);
+      console.error("Error fetching departments:", error);
     }
   };
 
+  const { user } = useAuth();
   return (
     <div className="salary-table-page">
       <h2>
-        Salaries for {employeeDetails?.name} (
-        {departments.find((d) => d._id === employeeDetails?.department)?.name ||
-          'Unknown Department'}
-        )
+        Salaries for {employeeDetails ? employeeDetails.name : "Employee"}
       </h2>
 
       {loading ? (
-        <div>Loading...</div>
+        <div className="loading">Loading...</div>
       ) : salaries.length === 0 ? (
         <p>No salary records found.</p>
       ) : (
@@ -75,13 +74,15 @@ const EmpSalaryTable = () => {
             {salaries.map((salary, index) => (
               <tr key={index}>
                 <td>{new Date(salary.payDate).toLocaleDateString()}</td>
-                <td>{salary.basicSalary}</td>
-                <td>{salary.allowances}</td>
-                <td>{salary.deductions}</td>
+                <td>{salary.basicSalary.toFixed(2)}</td>
+                <td>{salary.allowances.toFixed(2)}</td>
+                <td>{salary.deductions.toFixed(2)}</td>
                 <td>
-                  {salary.basicSalary +
+                  {(
+                    salary.basicSalary +
                     (salary.allowances || 0) -
-                    (salary.deductions || 0)}
+                    (salary.deductions || 0)
+                  ).toFixed(2)}
                 </td>
               </tr>
             ))}
