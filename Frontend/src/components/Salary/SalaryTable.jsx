@@ -20,7 +20,7 @@ const SalaryTable = () => {
   }, []);
 
   return (
-    <div className="salary-table">
+    <div className="salarytable">
       <h2>Salary Records</h2>
       <table>
         <thead>
