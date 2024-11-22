@@ -11,6 +11,7 @@ import {
   GetleaveRequests,
   UpdateLeaveRequestStatus,
   deleteLeaveRequest,
+  getEmployeeLeaveRequests,
 } from '../controllers/Employee.controller.js';
 import { authorizeRoles } from '../authmiddleware/authorizeRoles.js';
 
@@ -26,6 +27,7 @@ router.get('/department/:departmentId', getEmployeesByDepartment);
 //leave functionality
 router.post('/leaveRequests/:id', PostLeaveRequests);
 router.get('/getleaveRequests', GetleaveRequests);
+router.get('/getEmployeeLeaveRequests/:employeeId', getEmployeeLeaveRequests);
 router.patch(
   '/leaveRequests/:requestId/status',
   authorizeRoles('Admin'),

@@ -24,7 +24,7 @@ const LeaveRequestsAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRequests, setTotalRequests] = useState(0);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(5);
   const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {

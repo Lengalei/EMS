@@ -1,7 +1,6 @@
-import React from "react";
-import EmpSidebar from "../components/EmployeeDashboard/EmpSidebar";
-import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
+import EmpSidebar from '../components/EmployeeDashboard/EmpSidebar';
+import { Outlet } from 'react-router-dom';
+import Navbar from '../components/Navbar/Navbar';
 
 function EmployeeDashboard() {
   return (

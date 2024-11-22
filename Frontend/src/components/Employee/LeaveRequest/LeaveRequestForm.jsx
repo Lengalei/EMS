@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { Calendar } from 'lucide-react';
 import './LeaveRequestForm.scss';
 import apiRequest from '../../../lib/apiRequest';
+import { useAuth } from '../../../context/authContext';
+import EmployeeLeaveRequests from './EmployeeLeaveRequests';
 
-const LeaveRequestForm = ({ selectedEmployee, onclose }) => {
+const LeaveRequestForm = () => {
+  const { user: selectedEmployee } = useAuth();
   const [formData, setFormData] = useState({
     leaveType: '',
     startDate: '',
@@ -51,9 +54,6 @@ const LeaveRequestForm = ({ selectedEmployee, onclose }) => {
         endDate: '',
         reason: '',
       });
-      setTimeout(() => {
-        onclose();
-      }, 3000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -71,9 +71,6 @@ const LeaveRequestForm = ({ selectedEmployee, onclose }) => {
                 <Calendar className="calendar-icon" />
                 {selectedEmployee.name} Leave Request Form
               </h2>
-              <button className="leaveBtnClose" onClick={() => onclose()}>
-                Close
-              </button>
             </div>
 
             <p>Submit your leave request for approval</p>
@@ -157,6 +154,7 @@ const LeaveRequestForm = ({ selectedEmployee, onclose }) => {
           </form>
         </div>
       </div>
+      <EmployeeLeaveRequests selectedEmployee={selectedEmployee} />
     </div>
   );
 };

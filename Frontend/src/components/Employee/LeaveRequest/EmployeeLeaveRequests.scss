@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+// Color Variables
+$color-primary: #2c3e50;
+$color-secondary: #7f8c8d;
+$color-border: #e0e4e8;
+$color-background: #f8f9fa;
+
+// Status Colors
+$status-approved: #4caf50;
+$status-rejected: #f44336;
+$status-pending: #ff9800;
+
+// Transition
+$transition-speed: 0.3s;
+
+.leave-requests-container {
+  font-family: 'Inter', sans-serif;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+  width: 50%;
+  max-width: 90%;
+  justify-content: flex-start;
+  align-items: center;
+
+  .leave-requests__header {
+    background-color: $color-background;
+    padding: 1rem;
+    border-bottom: 1px solid $color-border;
+    border-radius: 6px;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $color-primary;
+    }
+  }
+
+  .leave-requests__list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 98%;
+    height: 70%;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(173, 165, 165, 0.705);
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+
+  .leave-request-item {
+    border-bottom: 1px solid $color-border;
+    padding: 4px;
+    width: 46%;
+    height: 40%;
+    margin: 0px 5px;
+    border: 1px solid wheat;
+    transition: background-color $transition-speed ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .leave-request__details {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.5rem;
+    // border: 1px solid firebrick;
+  }
+
+  .leave-request__type-status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .leave-request__type {
+      font-weight: 600;
+      text-transform: capitalize;
+      color: $color-primary;
+    }
+
+    .leave-request__status {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &--approved {
+        background-color: $status-approved;
+        color: white;
+      }
+
+      &--rejected {
+        background-color: $status-rejected;
+        color: white;
+      }
+
+      &--pending {
+        background-color: $status-pending;
+        color: white;
+      }
+    }
+  }
+
+  .leave-request__duration {
+    color: $color-secondary;
+    font-size: 0.875rem;
+
+    .leave-request__days {
+      margin-left: 0.5rem;
+      opacity: 0.7;
+    }
+  }
+
+  .leave-request__reason {
+    color: $color-secondary;
+    font-size: 0.875rem;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    // border: 1px solid firebrick;
+    text-overflow: ellipsis;
+  }
+
+  .leave-request__metadata {
+    font-size: 0.75rem;
+    color: $color-secondary;
+    margin-top: 0.5rem;
+  }
+
+  .leave-requests__loader,
+  .leave-requests__error,
+  .leave-requests__empty {
+    text-align: center;
+    padding: 2rem;
+    color: $color-secondary;
+  }
+}
+
+// Pagination Styles
+$pagination-color-primary: #2c3e50;
+$pagination-color-secondary: #7f8c8d;
+$pagination-color-background: #f8f9fa;
+$pagination-color-border: #e0e4e8;
+
+.leave-requests__pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 1rem 0;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+  }
+
+  .pagination-item {
+    margin: 0 0.25rem;
+
+    &.pagination-item--active {
+      .pagination-link {
+        background-color: $pagination-color-primary;
+        color: white;
+        border-color: $pagination-color-primary;
+      }
+    }
+
+    .pagination-link {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      text-decoration: none;
+      color: $pagination-color-primary;
+      border: 1px solid $pagination-color-border;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: $pagination-color-background;
+        border-color: $pagination-color-secondary;
+      }
+    }
+
+    &:first-child,
+    &:last-child {
+      .pagination-link {
+        padding: 0.5rem 0.75rem;
+      }
+    }
+  }
+}

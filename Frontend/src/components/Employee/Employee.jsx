@@ -3,7 +3,6 @@ import ReactPaginate from 'react-paginate';
 import Modal from 'react-modal';
 import './Employee.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import LeaveRequestForm from './LeaveRequest/LeaveRequestForm';
 import apiRequest from '../../lib/apiRequest';
 
 Modal.setAppElement('#root');
@@ -66,16 +65,6 @@ const Employee = () => {
     (currentPage + 1) * employeesPerPage
   );
 
-  const [requestLeave, setRequestLeave] = useState(false);
-  const [selectedEmployee, setSelctedEmployee] = useState(false);
-  const handleEmployeeLeave = (employee) => {
-    setSelctedEmployee(employee);
-    setRequestLeave(true);
-  };
-
-  const closeLeaveRequest = () => {
-    setRequestLeave(false);
-  };
   return (
     <div className="employee-page">
       <header className="employee-header">
@@ -167,13 +156,6 @@ const Employee = () => {
         containerClassName={'pagination'}
         activeClassName={'active'}
       />
-
-      {requestLeave && (
-        <LeaveRequestForm
-          selectedEmployee={selectedEmployee}
-          onclose={closeLeaveRequest}
-        />
-      )}
     </div>
   );
 };
