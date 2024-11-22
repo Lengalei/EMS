@@ -1,26 +1,25 @@
-import { useState, useEffect } from "react";
-import ReactPaginate from "react-paginate";
-import Modal from "react-modal";
-import "./Employee.scss";
-import { Link, useNavigate } from "react-router-dom";
-import LeaveRequestForm from "./LeaveRequest/LeaveRequestForm";
-import apiRequest from "../../lib/apiRequest";
+import { useState, useEffect } from 'react';
+import ReactPaginate from 'react-paginate';
+import Modal from 'react-modal';
+import './Employee.scss';
+import { Link, useNavigate } from 'react-router-dom';
+import apiRequest from '../../lib/apiRequest';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
-    name: "",
-    dob: "",
-    department: "",
-    email: "",
-    password: "",
+    name: '',
+    dob: '',
+    department: '',
+    email: '',
+    password: '',
   });
   const employeesPerPage = 5;
   const navigate = useNavigate();
@@ -32,10 +31,10 @@ const Employee = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const response = await apiRequest.get("/employee/employees");
+      const response = await apiRequest.get('/employee/employees');
       setEmployees(response.data);
     } catch (error) {
-      console.error("Error fetching employees:", error);
+      console.error('Error fetching employees:', error);
     } finally {
       setLoading(false);
     }
@@ -66,35 +65,21 @@ const Employee = () => {
     (currentPage + 1) * employeesPerPage
   );
 
-  const [requestLeave, setRequestLeave] = useState(false);
-  const [selectedEmployee, setSelctedEmployee] = useState(false);
-  const handleEmployeeLeave = (employee) => {
-    setSelctedEmployee(employee);
-    setRequestLeave(true);
-  };
-
-  const closeLeaveRequest = () => {
-    setRequestLeave(false);
-  };
-
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "http://localhost:6500/api/employee/postEmployee",
-        newEmployee
-      );
+      await apiRequest.post('/employee/postEmployee', newEmployee);
       setNewEmployee({
-        name: "",
-        dob: "",
-        department: "",
-        email: "",
-        password: "",
+        name: '',
+        dob: '',
+        department: '',
+        email: '',
+        password: '',
       });
       setIsModalOpen(false);
       await fetchEmployees(); // Refresh the list after adding
     } catch (error) {
-      console.error("Error adding employee:", error);
+      console.error('Error adding employee:', error);
     }
   };
 
@@ -107,31 +92,29 @@ const Employee = () => {
   const handleUpdateEmployee = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:6500/api/employees/updateEmployee/${editingEmployee._id}`,
+      await apiRequest.put(
+        `/employees/updateEmployee/${editingEmployee._id}`,
         newEmployee
       );
       setEditingEmployee(null);
       setNewEmployee({
-        name: "",
-        dob: "",
-        department: "",
+        name: '',
+        dob: '',
+        department: '',
       });
       setIsModalOpen(false);
       await fetchEmployees(); // Refresh the list after updating
     } catch (error) {
-      console.error("Error updating employee:", error);
+      console.error('Error updating employee:', error);
     }
   };
 
   const handleDeleteEmployee = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:6500/api/employee/deleteEmployee/${id}`
-      );
+      await apiRequest.delete(`/employee/deleteEmployee/${id}`);
       await fetchEmployees(); // Refresh the list after deleting
     } catch (error) {
-      console.error("Error deleting employee:", error);
+      console.error('Error deleting employee:', error);
     }
   };
   return (
@@ -144,11 +127,11 @@ const Employee = () => {
             setIsModalOpen(true);
             setEditingEmployee(null);
             setNewEmployee({
-              name: "",
-              dob: "",
-              department: "",
-              email: "",
-              password: "",
+              name: '',
+              dob: '',
+              department: '',
+              email: '',
+              password: '',
             });
           }}
         >
@@ -205,12 +188,7 @@ const Employee = () => {
                 >
                   Salary
                 </button>
-                <button
-                  className="leave-btn"
-                  onClick={() => handleEmployeeLeave(employee)}
-                >
-                  Leave
-                </button>
+                <button className="leave-btn">Leave</button>
               </td>
             </tr>
           ))}
@@ -218,20 +196,13 @@ const Employee = () => {
       </table>
 
       <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
+        previousLabel={'Previous'}
+        nextLabel={'Next'}
         pageCount={Math.ceil(filteredEmployees.length / employeesPerPage)}
         onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
       />
-
-      {requestLeave && (
-        <LeaveRequestForm
-          selectedEmployee={selectedEmployee}
-          onclose={closeLeaveRequest}
-        />
-      )}
 
       <Modal
         isOpen={isModalOpen}
@@ -239,7 +210,7 @@ const Employee = () => {
         className="modal"
         overlayClassName="modal-overlay"
       >
-        <h3>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h3>
+        <h3>{editingEmployee ? 'Edit Employee' : 'Add New Employee'}</h3>
         <form
           onSubmit={editingEmployee ? handleUpdateEmployee : handleAddEmployee}
           className="modal-form"
@@ -290,7 +261,7 @@ const Employee = () => {
             required
           />
           <button type="submit">
-            {editingEmployee ? "Update Employee" : "Add Employee"}
+            {editingEmployee ? 'Update Employee' : 'Add Employee'}
           </button>
           <button type="button" onClick={() => setIsModalOpen(false)}>
             Close

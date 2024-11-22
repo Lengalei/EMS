@@ -1,18 +1,17 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 import {
   FaTachometerAlt,
   FaUser,
   FaCalendarAlt,
   FaMoneyBillWave,
   FaCog,
-} from "react-icons/fa";
-import "../sidebar/Sidebar.scss";
-import { useAuth } from "../../context/authContext";
+} from 'react-icons/fa';
+import '../sidebar/Sidebar.scss';
+import { useAuth } from '../../context/authContext';
 
 const EmpSidebar = () => {
-  const { user} = useAuth();
-  console.log(user)
+  const { user } = useAuth();
+  console.log(user);
   return (
     <aside className="sidebar">
       <h2 className="sidebar__logo">Employee MS</h2>
@@ -34,7 +33,10 @@ const EmpSidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/leaves" activeClassName="active">
+            <NavLink
+              to="/employee-dashboard/leaveRequest"
+              activeClassName="active"
+            >
               <FaCalendarAlt className="sidebar__icon" />
               Leaves
             </NavLink>

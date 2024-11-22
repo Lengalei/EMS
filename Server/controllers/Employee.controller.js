@@ -146,23 +146,23 @@ const PostLeaveRequests = async (req, res) => {
       });
     }
 
-    // Check for overlapping leave requests
-    const overlappingRequests = await LeaveRequest.findOne({
-      employeeId: id,
-      status: { $ne: 'rejected' }, // Exclude rejected requests
-      $or: [
-        {
-          startDate: { $lte: endDate },
-          endDate: { $gte: startDate },
-        },
-      ],
-    });
+    // // Check for overlapping leave requests
+    // const overlappingRequests = await LeaveRequest.findOne({
+    //   employeeId: id,
+    //   status: { $ne: 'rejected' }, // Exclude rejected requests
+    //   $or: [
+    //     {
+    //       startDate: { $lte: endDate },
+    //       endDate: { $gte: startDate },
+    //     },
+    //   ],
+    // });
 
-    if (overlappingRequests) {
-      return res.status(400).json({
-        message: 'You already have a leave request for these dates',
-      });
-    }
+    // if (overlappingRequests) {
+    //   return res.status(400).json({
+    //     message: 'You already have a leave request for these dates',
+    //   });
+    // }
 
     // Create a new leave request
     const newLeaveRequest = await LeaveRequest.create({
@@ -195,7 +195,7 @@ const GetleaveRequests = async (req, res) => {
   try {
     // Extract query parameters
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
-    const limit = Math.max(1, parseInt(req.query.limit, 10) || 10);
+    const limit = Math.max(1, parseInt(req.query.limit, 5) || 5);
     const status = req.query.status || 'all';
 
     // Calculate skip value for pagination
@@ -257,6 +257,24 @@ const GetleaveRequests = async (req, res) => {
     console.error('Error getting leave requests: ', error.message);
     return res.status(500).json({
       message: error.message || 'Error fetching leave requests!',
+    });
+  }
+};
+
+//get an employee leave requests
+export const getEmployeeLeaveRequests = async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+
+    const leaveRequests = await LeaveRequest.find({ employeeId: employeeId })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.status(200).json(leaveRequests);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error retrieving leave requests',
+      error: error.message,
     });
   }
 };
