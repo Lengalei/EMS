@@ -4,13 +4,6 @@ import Modal from 'react-modal';
 import './Employee.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import apiRequest from '../../lib/apiRequest';
-import { useState, useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
-import Modal from 'react-modal';
-import './Employee.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import LeaveRequestForm from './LeaveRequest/LeaveRequestForm';
-import apiRequest from '../../lib/apiRequest';
 
 Modal.setAppElement('#root');
 
@@ -72,24 +65,10 @@ const Employee = () => {
     (currentPage + 1) * employeesPerPage
   );
 
-  const [requestLeave, setRequestLeave] = useState(false);
-  const [selectedEmployee, setSelctedEmployee] = useState(false);
-  const handleEmployeeLeave = (employee) => {
-    setSelctedEmployee(employee);
-    setRequestLeave(true);
-  };
-
-  const closeLeaveRequest = () => {
-    setRequestLeave(false);
-  };
-
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        'http://localhost:6500/api/employee/postEmployee',
-        newEmployee
-      );
+      await apiRequest.post('/employee/postEmployee', newEmployee);
       setNewEmployee({
         name: '',
         dob: '',
@@ -113,8 +92,8 @@ const Employee = () => {
   const handleUpdateEmployee = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:6500/api/employees/updateEmployee/${editingEmployee._id}`,
+      await apiRequest.put(
+        `/employees/updateEmployee/${editingEmployee._id}`,
         newEmployee
       );
       setEditingEmployee(null);
@@ -132,9 +111,7 @@ const Employee = () => {
 
   const handleDeleteEmployee = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:6500/api/employee/deleteEmployee/${id}`
-      );
+      await apiRequest.delete(`/employee/deleteEmployee/${id}`);
       await fetchEmployees(); // Refresh the list after deleting
     } catch (error) {
       console.error('Error deleting employee:', error);
@@ -211,12 +188,7 @@ const Employee = () => {
                 >
                   Salary
                 </button>
-                <button
-                  className="leave-btn"
-                  onClick={() => handleEmployeeLeave(employee)}
-                >
-                  Leave
-                </button>
+                <button className="leave-btn">Leave</button>
               </td>
             </tr>
           ))}
@@ -231,13 +203,6 @@ const Employee = () => {
         containerClassName={'pagination'}
         activeClassName={'active'}
       />
-
-      {requestLeave && (
-        <LeaveRequestForm
-          selectedEmployee={selectedEmployee}
-          onclose={closeLeaveRequest}
-        />
-      )}
 
       <Modal
         isOpen={isModalOpen}
