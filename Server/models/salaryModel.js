@@ -1,10 +1,10 @@
 // models/Salary.model.js
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const SalarySchema = new mongoose.Schema({
   employee: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Employee",
+    ref: 'User',
     required: true,
   },
   basicSalary: { type: Number, required: true },
@@ -13,6 +13,6 @@ const SalarySchema = new mongoose.Schema({
   payDate: { type: Date, required: true },
 });
 
-const Salary = mongoose.model("Salary", SalarySchema);
+const Salary = mongoose.model('Salary', SalarySchema);
 
 export default Salary;

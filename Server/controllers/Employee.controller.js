@@ -267,6 +267,8 @@ export const getEmployeeLeaveRequests = async (req, res) => {
     const { employeeId } = req.params;
 
     const leaveRequests = await LeaveRequest.find({ employeeId: employeeId })
+      .populate('employeeId', 'name email department')
+      .populate('reviewedBy', 'name email ')
       .sort({ createdAt: -1 })
       .lean();
 

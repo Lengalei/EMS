@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import './Employee.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import apiRequest from '../../lib/apiRequest';
+import LeaveRequestsPopup from './LeaveRequest/LeaveRequestsPopup';
+import { InfinitySpin } from 'react-loader-spinner';
 
 Modal.setAppElement('#root');
 
@@ -117,6 +119,29 @@ const Employee = () => {
       console.error('Error deleting employee:', error);
     }
   };
+
+  const [displayLeaveDetails, setDisplayLeaveDetails] = useState(false);
+  const [employeeLeaveDetails, setEmployeeLeaveDetails] = useState([]);
+
+  const handleDisplayLeave = async (employee) => {
+    await handleFetchLeaveDetails(employee._id);
+    setDisplayLeaveDetails(true);
+  };
+  const handleFetchLeaveDetails = async (id) => {
+    setLoading(true);
+    try {
+      const response = await apiRequest.get(
+        `/employee/getEmployeeLeaveRequests/${id}`
+      );
+      if (response.status) {
+        setEmployeeLeaveDetails(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="employee-page">
       <header className="employee-header">
@@ -138,7 +163,6 @@ const Employee = () => {
           Add New Employee
         </button>
       </header>
-
       <input
         type="text"
         className="search-input"
@@ -146,9 +170,6 @@ const Employee = () => {
         value={searchTerm}
         onChange={handleSearchChange}
       />
-
-      {loading && <div className="loader">Loading...</div>}
-
       <table className="employee-table">
         <thead>
           <tr>
@@ -188,13 +209,17 @@ const Employee = () => {
                 >
                   Salary
                 </button>
-                <button className="leave-btn">Leave</button>
+                <button
+                  className="leave-btn"
+                  onClick={() => handleDisplayLeave(employee)}
+                >
+                  Leave
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
       <ReactPaginate
         previousLabel={'Previous'}
         nextLabel={'Next'}
@@ -203,7 +228,26 @@ const Employee = () => {
         containerClassName={'pagination'}
         activeClassName={'active'}
       />
-
+      {displayLeaveDetails && (
+        <div className="EmployeeLeaveDataPopop">
+          <LeaveRequestsPopup
+            isOpen={displayLeaveDetails}
+            onClose={() => setDisplayLeaveDetails(false)}
+            leaveRequests={employeeLeaveDetails}
+          />
+        </div>
+      )}
+      {loading && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height="200"
+            width="200"
+            color="#4fa94d"
+            ariaLabel="loading"
+            visible={true}
+          />
+        </div>
+      )}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}

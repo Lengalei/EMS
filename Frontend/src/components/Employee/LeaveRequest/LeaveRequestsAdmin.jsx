@@ -15,6 +15,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
 import apiRequest from '../../../lib/apiRequest';
+import { InfinitySpin } from 'react-loader-spinner';
 
 // Configure axios to include credentials
 axios.defaults.withCredentials = true;
@@ -232,13 +233,7 @@ const LeaveRequestsAdmin = () => {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="6" className="loading-cell">
-                    <div className="loading-spinner"></div>
-                  </td>
-                </tr>
-              ) : requests && requests?.length === 0 ? (
+              {requests && requests?.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="empty-cell">
                     No leave requests found
@@ -405,6 +400,18 @@ const LeaveRequestsAdmin = () => {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {loading && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height="200"
+            width="200"
+            color="#4fa94d"
+            ariaLabel="loading"
+            visible={true}
+          />
         </div>
       )}
     </div>

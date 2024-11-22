@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import Pagination from 'react-js-pagination';
-import { formatDistance } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 import './EmployeeLeaveRequests.scss';
 import apiRequest from '../../../lib/apiRequest';
+import { InfinitySpin } from 'react-loader-spinner';
 
 const EmployeeLeaveRequests = ({ selectedEmployee }) => {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [selectedLeaveRequest, setSelectedLeaveRequest] = useState('');
+  const [displayMoreDetails, setDisplayMoreDetails] = useState(false);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,11 +60,50 @@ const EmployeeLeaveRequests = ({ selectedEmployee }) => {
     setCurrentPage(pageNumber);
   };
 
-  if (loading)
-    return (
-      <div className="leave-requests__loader">Loading leave records...</div>
-    );
   if (error) return <div className="leave-requests__error">{error}</div>;
+
+  const handleDisplayLeave = (request) => {
+    setSelectedLeaveRequest(request);
+    setDisplayMoreDetails(true);
+  };
+
+  const LeaveDetailsPopup = ({ leaveRequest, onClose }) => {
+    return (
+      <div className="leave-details-popup-overlay">
+        <div className="leave-details-popup">
+          <button className="close-button" onClick={onClose}>
+            &times;
+          </button>
+          <div className="leave-details-content">
+            <h3>{leaveRequest.leaveType} Leave</h3>
+            <p>
+              <strong>Status:</strong> {leaveRequest.status}
+            </p>
+            <p>
+              <strong>Duration:</strong>{' '}
+              {format(new Date(leaveRequest.startDate), 'dd MMMM yyyy')} to{' '}
+              {format(new Date(leaveRequest.endDate), 'dd MMMM yyyy')}
+            </p>
+            <p>
+              <strong>Reason:</strong> {leaveRequest.reason}
+            </p>
+            <p>
+              <strong>Reviewed By:</strong>{' '}
+              {leaveRequest.reviewedBy
+                ? leaveRequest.reviewedBy.name
+                : 'Not reviewed yet'}
+            </p>
+            {leaveRequest.reviewedAt && (
+              <p>
+                <strong>Reviewed On:</strong>
+                {format(new Date(leaveRequest.reviewedAt), 'dd MMMM yyyy')}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="leave-requests-container">
@@ -68,12 +111,16 @@ const EmployeeLeaveRequests = ({ selectedEmployee }) => {
         <h2>Leave Request History</h2>
       </div>
       <div className="leave-requests__list">
-        {leaveRequests.length === 0 ? (
+        {leaveRequests && leaveRequests?.length === 0 ? (
           <div className="leave-requests__empty">No leave requests found</div>
         ) : (
           <>
             {currentRequests.map((request) => (
-              <div key={request._id} className="leave-request-item">
+              <div
+                key={request._id}
+                className="leave-request-item"
+                onClick={() => handleDisplayLeave(request)}
+              >
                 <div className="leave-request__details">
                   <div className="leave-request__type-status">
                     <span className="leave-request__type">
@@ -124,6 +171,23 @@ const EmployeeLeaveRequests = ({ selectedEmployee }) => {
           activeClass="pagination-item--active"
         />
       </div>
+      {loading && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height="200"
+            width="200"
+            color="#4fa94d"
+            ariaLabel="loading"
+            visible={true}
+          />
+        </div>
+      )}
+      {displayMoreDetails && (
+        <LeaveDetailsPopup
+          leaveRequest={selectedLeaveRequest}
+          onClose={() => setDisplayMoreDetails(false)}
+        />
+      )}
     </div>
   );
 };
