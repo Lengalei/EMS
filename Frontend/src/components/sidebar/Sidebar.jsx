@@ -46,12 +46,12 @@ const Sidebar = () => {
               Salary
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to="/settings" activeClassName="active">
               <FaCog className="sidebar__icon" />
               Settings
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               to="/admin-dashboard/employees/LeaveRequestsAdmin"
