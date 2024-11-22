@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import ReactPaginate from "react-paginate";
-import "./Departments.scss";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import ReactPaginate from 'react-paginate';
+import './Departments.scss';
+import apiRequest from '../../lib/apiRequest';
 
 const Departments = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [newDepartment, setNewDepartment] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editDepartmentId, setEditDepartmentId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const departmentsPerPage = 5;
 
@@ -21,12 +21,10 @@ const Departments = () => {
   const fetchDepartments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:6500/api/department/getAllDepartments"
-      );
+      const response = await apiRequest.get('/department/getAllDepartments');
       setDepartments(response.data);
     } catch (error) {
-      console.error("Error fetching departments:", error);
+      console.error('Error fetching departments:', error);
     } finally {
       setLoading(false);
     }
@@ -50,8 +48,8 @@ const Departments = () => {
     try {
       if (isEditing && editDepartmentId) {
         // Update department
-        const response = await axios.put(
-          `http://localhost:6500/api/department/updateDepartment/${editDepartmentId}`,
+        const response = await apiRequest.put(
+          `/department/updateDepartment/${editDepartmentId}`,
           newDepartment
         );
         if (response.status === 200) {
@@ -63,18 +61,18 @@ const Departments = () => {
         }
       } else {
         // Add new department
-        const response = await axios.post(
-          "http://localhost:6500/api/department/createDepartment",
+        const response = await apiRequest.post(
+          '/department/createDepartment',
           newDepartment
         );
         setDepartments([...departments, response.data]);
       }
       togglePopup();
-      setNewDepartment({ name: "", description: "" });
+      setNewDepartment({ name: '', description: '' });
       setIsEditing(false);
       setEditDepartmentId(null);
     } catch (error) {
-      console.error("Error saving department:", error);
+      console.error('Error saving department:', error);
     } finally {
       setLoading(false);
     }
@@ -84,14 +82,14 @@ const Departments = () => {
   const handleDeleteDepartment = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `http://localhost:6500/api/department/deleteDepartment/${id}`
+      const response = await apiRequest.delete(
+        `/department/deleteDepartment/${id}`
       );
       if (response.status === 200) {
         setDepartments(departments.filter((dept) => dept._id !== id));
       }
     } catch (error) {
-      console.error("Error deleting department:", error);
+      console.error('Error deleting department:', error);
     } finally {
       setLoading(false);
     }
@@ -99,7 +97,7 @@ const Departments = () => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
-    setNewDepartment({ name: "", description: "" });
+    setNewDepartment({ name: '', description: '' });
     setIsEditing(false);
     setEditDepartmentId(null);
   };
@@ -185,18 +183,18 @@ const Departments = () => {
         </table>
 
         <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
           pageCount={pageCount}
           onPageChange={handlePageClick}
-          containerClassName={"pagination"}
+          containerClassName={'pagination'}
         />
       </div>
 
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup-content">
-            <h3>{isEditing ? "Edit Department" : "Add New Department"}</h3>
+            <h3>{isEditing ? 'Edit Department' : 'Add New Department'}</h3>
             <form onSubmit={handleSaveDepartment}>
               <label>Department Name</label>
               <input
@@ -221,7 +219,7 @@ const Departments = () => {
                 required
               ></textarea>
               <button type="submit" className="submit-btn">
-                {isEditing ? "Update Department" : "Add Department"}
+                {isEditing ? 'Update Department' : 'Add Department'}
               </button>
               <button type="button" className="close-btn" onClick={togglePopup}>
                 Close

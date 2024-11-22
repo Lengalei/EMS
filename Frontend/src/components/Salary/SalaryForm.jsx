@@ -1,19 +1,19 @@
 // SalaryForm.jsx
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./SalaryForm.scss";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './SalaryForm.scss';
+import apiRequest from '../../lib/apiRequest';
 
 const SalaryForm = () => {
   const [departments, setDepartments] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState('');
   const [salaryData, setSalaryData] = useState({
-    basicSalary: "",
-    allowances: "",
-    deductions: "",
-    payDate: "",
+    basicSalary: '',
+    allowances: '',
+    deductions: '',
+    payDate: '',
   });
   const navigate = useNavigate();
 
@@ -21,12 +21,10 @@ const SalaryForm = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:6500/api/department/getAllDepartments"
-        );
+        const response = await apiRequest.get('/department/getAllDepartments');
         setDepartments(response.data);
       } catch (error) {
-        console.error("Error fetching departments:", error);
+        console.error('Error fetching departments:', error);
       }
     };
 
@@ -38,19 +36,17 @@ const SalaryForm = () => {
     if (selectedDepartment) {
       const fetchEmployees = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:6500/api/employee/employees`
-          );
+          const response = await apiRequest.get(`/employee/employees`);
           setEmployees(response.data);
         } catch (error) {
-          console.error("Error fetching employees:", error);
+          console.error('Error fetching employees:', error);
         }
       };
 
       fetchEmployees();
     } else {
       setEmployees([]);
-      setSelectedEmployee("");
+      setSelectedEmployee('');
     }
   }, [selectedDepartment]);
 
@@ -62,15 +58,15 @@ const SalaryForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:6500/api/salaries/add", {
+      await apiRequest.post('/salaries/add', {
         employee: selectedEmployee,
         ...salaryData,
       });
-      alert("Salary added successfully");
-      navigate("/admin-dashboard/salary-table"); // Redirect to the salary table page
+      alert('Salary added successfully');
+      navigate('/admin-dashboard/salary-table'); // Redirect to the salary table page
     } catch (error) {
-      console.error("Error adding salary:", error);
-      alert("Failed to add salary");
+      console.error('Error adding salary:', error);
+      alert('Failed to add salary');
     }
   };
 

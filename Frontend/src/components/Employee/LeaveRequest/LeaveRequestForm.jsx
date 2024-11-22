@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Calendar } from 'lucide-react';
 import './LeaveRequestForm.scss';
-import axios from 'axios';
+import apiRequest from '../../../lib/apiRequest';
 
 const LeaveRequestForm = ({ selectedEmployee, onclose }) => {
   const [formData, setFormData] = useState({
@@ -37,8 +37,8 @@ const LeaveRequestForm = ({ selectedEmployee, onclose }) => {
     setError('');
     setSuccess(false);
     try {
-      const response = await axios.post(
-        `http://localhost:6500/api/employee/leaveRequests/${selectedEmployee._id}`,
+      const response = await apiRequest.post(
+        `/employee/leaveRequests/${selectedEmployee._id}`,
         formData
       );
       if (!response.status) {

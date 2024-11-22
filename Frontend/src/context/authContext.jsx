@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import apiRequest from '../lib/apiRequest';
 
 // Create the userContext
 export const userContext = createContext();
@@ -15,14 +16,11 @@ export const AuthContextProvider = ({ children }) => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const response = await axios.get(
-            'http://localhost:6500/api/auth/verify',
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await apiRequest.get('/auth/verify', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           if (response.data.success) {
             setUser(response.data.user);
           }

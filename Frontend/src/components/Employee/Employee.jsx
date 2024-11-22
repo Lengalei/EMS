@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import Modal from 'react-modal';
 import './Employee.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import LeaveRequestForm from './LeaveRequest/LeaveRequestForm';
+import apiRequest from '../../lib/apiRequest';
 
 Modal.setAppElement('#root');
 
@@ -32,9 +32,7 @@ const Employee = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        'http://localhost:6500/api/employee/employees'
-      );
+      const response = await apiRequest.get('/employee/employees');
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);

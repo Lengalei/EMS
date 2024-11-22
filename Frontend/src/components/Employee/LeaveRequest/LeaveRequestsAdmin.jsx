@@ -14,6 +14,7 @@ import './LeaveRequestsAdmin.scss';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
+import apiRequest from '../../../lib/apiRequest';
 
 // Configure axios to include credentials
 axios.defaults.withCredentials = true;
@@ -34,8 +35,8 @@ const LeaveRequestsAdmin = () => {
     setLoading(true);
     try {
       // Replace with your actual API endpoint
-      const response = await axios.get(
-        `http://localhost:6500/api/employee/getleaveRequests?page=${page}&status=${filterStatus}`
+      const response = await apiRequest.get(
+        `/employee/getleaveRequests?page=${page}&status=${filterStatus}`
       );
       if (response.status) {
         setRequests(response.data.requests);
@@ -54,8 +55,8 @@ const LeaveRequestsAdmin = () => {
   const handleStatusChange = async (requestId, newStatus) => {
     setLoading(true);
     try {
-      const response = await axios.patch(
-        `http://localhost:6500/api/employee/leaveRequests/${requestId}/status`,
+      const response = await apiRequest.patch(
+        `/employee/leaveRequests/${requestId}/status`,
         { status: newStatus }
       );
 
@@ -181,8 +182,8 @@ const LeaveRequestsAdmin = () => {
   const handleDelete = async (_id) => {
     setLoading(true);
     try {
-      const res = await axios.delete(
-        `http://localhost:6500/api/employee/deleteLeaveRequest/${_id}`
+      const res = await apiRequest.delete(
+        `/employee/deleteLeaveRequest/${_id}`
       );
       if (res.status) {
         await fetchRequests(currentPage);

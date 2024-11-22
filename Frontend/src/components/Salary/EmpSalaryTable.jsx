@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
-import "./SalaryTable.scss";
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import './SalaryTable.scss';
+import apiRequest from '../../lib/apiRequest';
 
 const EmpSalaryTable = () => {
   const { employeeId } = useParams();
@@ -20,12 +20,10 @@ const EmpSalaryTable = () => {
   const fetchSalaries = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:6500/api/salaries/salaries/${employeeId}`
-      );
+      const response = await apiRequest.get(`/salaries/salaries/${employeeId}`);
       setSalaries(response.data);
     } catch (error) {
-      console.error("Error fetching salaries:", error);
+      console.error('Error fetching salaries:', error);
     } finally {
       setLoading(false);
     }
@@ -33,23 +31,19 @@ const EmpSalaryTable = () => {
 
   const fetchEmployeeDetails = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:6500/api/employee/${employeeId}`
-      );
+      const response = await apiRequest.get(`/employee/${employeeId}`);
       setEmployeeDetails(response.data);
     } catch (error) {
-      console.error("Error fetching employee details:", error);
+      console.error('Error fetching employee details:', error);
     }
   };
 
   const fetchDepartments = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:6500/api/department/getAllDepartments"
-      );
+      const response = await apiRequest.get('/department/getAllDepartments');
       setDepartments(response.data);
     } catch (error) {
-      console.error("Error fetching departments:", error);
+      console.error('Error fetching departments:', error);
     }
   };
 
@@ -58,7 +52,7 @@ const EmpSalaryTable = () => {
       <h2>
         Salaries for {employeeDetails?.name} (
         {departments.find((d) => d._id === employeeDetails?.department)?.name ||
-          "Unknown Department"}
+          'Unknown Department'}
         )
       </h2>
 

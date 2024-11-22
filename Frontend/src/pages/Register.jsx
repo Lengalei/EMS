@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { TailSpin } from 'react-loader-spinner';
 import './register.scss';
 import { Link, useNavigate } from 'react-router-dom';
+import apiRequest from '../lib/apiRequest';
 
 function Register() {
   const [userName, setUserName] = useState('');
@@ -17,14 +17,11 @@ function Register() {
     e.preventDefault();
     setloading(true);
     try {
-      const response = await axios.post(
-        'http://localhost:6500/api/auth/register',
-        {
-          userName,
-          email,
-          password,
-        }
-      );
+      const response = await apiRequest.post('/auth/register', {
+        userName,
+        email,
+        password,
+      });
 
       if (response.status) {
         navigate('/login');

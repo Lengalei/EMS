@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react';
-import axios from 'axios';
 // import { TailSpin } from "react-loader-spinner";
 import './Pages.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { userContext } from '../context/authContext';
 import { TailSpin } from 'react-loader-spinner';
+import apiRequest from '../lib/apiRequest';
 // import useAuth from "../context/authContext.jsx"
 
 function Login() {
@@ -20,13 +20,10 @@ function Login() {
     e.preventDefault();
     setloading(true);
     try {
-      const response = await axios.post(
-        'http://localhost:6500/api/auth/login',
-        {
-          email,
-          password,
-        }
-      );
+      const response = await apiRequest.post('/auth/login', {
+        email,
+        password,
+      });
 
       if (response.data.success) {
         // alert("Login successful");
