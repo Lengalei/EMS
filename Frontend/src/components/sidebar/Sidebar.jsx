@@ -43,12 +43,6 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/leaves" activeClassName="active">
-              <FaCalendarAlt className="sidebar__icon" />
-              Leaves
-            </NavLink>
-          </li>
-          <li>
             <NavLink to="/admin-dashboard/salary" activeClassName="active">
               <FaMoneyBillWave className="sidebar__icon" />
               Salary
@@ -66,7 +60,7 @@ const Sidebar = () => {
               activeClassName="active"
               end
             >
-              <FaCog className="sidebar__icon" />
+              <FaCalendarAlt className="sidebar__icon" />
               Leave Requests
             </NavLink>
           </li>
