@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
 
 // Color Variables
 $color-primary: #2c3e50;
@@ -13,9 +13,15 @@ $status-pending: #ff9800;
 
 // Transition
 $transition-speed: 0.3s;
+.leave-details-popup-overlay {
+  width: 100%;
+  height: 90vh;
+  border: 2px solid yellow;
+}
 
 .leave-requests-container {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+  border: 2px solid red;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -304,13 +310,13 @@ $pagination-color-border: #e0e4e8;
 
 /* Starry Background Effect for Popup Overlay */
 .leave-details-popup-overlay::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('/employees.jpg') center/cover no-repeat;
+  background: url("/employees.jpg") center/cover no-repeat;
   opacity: 0.09;
   z-index: -1;
 }
