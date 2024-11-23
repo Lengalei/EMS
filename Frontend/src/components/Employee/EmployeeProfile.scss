@@ -5,8 +5,9 @@
   justify-content: center;
   align-items: center;
   padding: 30px;
-  min-height: 100vh;
-  background-color: #f9f9f9;
+  height: 90vh;
+  width: 100%;
+  background-color: white;
 
   .profile-header {
     display: flex;
@@ -66,7 +67,8 @@
     margin-top: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-    th, td {
+    th,
+    td {
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
