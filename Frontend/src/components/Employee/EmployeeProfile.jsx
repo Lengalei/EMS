@@ -1,8 +1,8 @@
 // EmployeeProfile.jsx
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import './EmployeeProfile.scss';
-import apiRequest from '../../lib/apiRequest';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "./EmployeeProfile.scss";
+import apiRequest from "../../lib/apiRequest";
 
 const EmployeeProfile = () => {
   const { id } = useParams(); // Get employee ID from URL
@@ -14,7 +14,7 @@ const EmployeeProfile = () => {
         const response = await apiRequest.get(`/employee/employees/${id}`);
         setEmployee(response.data);
       } catch (error) {
-        console.error('Error fetching employee:', error);
+        console.error("Error fetching employee:", error);
       }
     };
 
@@ -27,7 +27,7 @@ const EmployeeProfile = () => {
     <div className="employee-profile">
       <div className="profile-header">
         <img
-          src={employee.image || '/default-avatar.jpg'}
+          src={employee.image || "/default-avatar.jpg"}
           alt={employee.name}
           className="profile-image"
         />
@@ -37,20 +37,17 @@ const EmployeeProfile = () => {
             <strong>Department:</strong> {employee.department}
           </p>
           <p>
-            <strong>Email:</strong> {employee.email || 'example@gmail.com'}
+            <strong>Email:</strong> {employee.email || "example@gmail.com"}
           </p>
           <p>
-            <strong>Phone:</strong> {employee.phone}
+            <strong>Phone:</strong> {employee.phone || "07981234567"}
           </p>
           <p>
-            <strong>Address:</strong> {employee.address}
+            <strong>Address:</strong> {employee.address || "P.O BOX 123-563-02"}
           </p>
           <p>
-            <strong>Join Date:</strong>{' '}
+            <strong>Join Date:</strong>{" "}
             {new Date(employee.joinDate).toLocaleDateString()}
-          </p>
-          <p>
-            <strong>Position:</strong> {employee.position}
           </p>
         </div>
       </div>
