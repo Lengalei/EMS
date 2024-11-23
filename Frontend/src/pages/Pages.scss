@@ -6,7 +6,7 @@
   background-color: black;
   z-index: -100;
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url('/employees.jpg');
+    url("/employees.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -85,9 +85,8 @@
 
 .admindashboard {
   display: flex;
-  // justify-content: space-between;
   width: 100%;
-  // padding-left: 200px;
+  height: 100%;
 }
 .admin {
   width: 100%;
