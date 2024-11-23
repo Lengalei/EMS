@@ -23,13 +23,21 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin-dashboard/employees" activeClassName="active">
+            <NavLink
+              to="/admin-dashboard/employees"
+              activeClassName="active"
+              end
+            >
               <FaUsers className="sidebar__icon" />
               Employees
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin-dashboard/departments" activeClassName="active">
+            <NavLink
+              to="/admin-dashboard/departments"
+              activeClassName="active"
+              end
+            >
               <FaBuilding className="sidebar__icon" />
               Departments
             </NavLink>
