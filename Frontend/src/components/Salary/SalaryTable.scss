@@ -1,14 +1,17 @@
 .salary-table-page {
   padding: 20px;
-  background-color: #f9f9f9;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/salary.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
   font-family: Arial, sans-serif;
-  max-height: 90vh;
+  height: 90vh;
   width: 100%;
 
   h2 {
     margin-bottom: 20px;
     font-size: 1.5rem;
-    color: #333;
+    color: #fcf4f4;
   }
 
   .loading {
