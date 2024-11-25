@@ -1,15 +1,15 @@
-import { useContext, useState } from 'react';
+import { useContext, useState } from "react";
 // import { TailSpin } from "react-loader-spinner";
-import './Pages.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import { userContext } from '../context/authContext';
-import { TailSpin } from 'react-loader-spinner';
-import apiRequest from '../lib/apiRequest';
+import "./Pages.scss";
+import { Link, useNavigate } from "react-router-dom";
+import { userContext } from "../context/authContext";
+import { TailSpin } from "react-loader-spinner";
+import apiRequest from "../lib/apiRequest";
 // import useAuth from "../context/authContext.jsx"
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setloading] = useState(false);
   const [error, setError] = useState(null);
   // const {login} = useAuth()
@@ -20,7 +20,7 @@ function Login() {
     e.preventDefault();
     setloading(true);
     try {
-      const response = await apiRequest.post('/auth/login', {
+      const response = await apiRequest.post("/auth/login", {
         email,
         password,
       });
@@ -28,18 +28,18 @@ function Login() {
       if (response.data.success) {
         // alert("Login successful");
         login(response.data.user);
-        localStorage.setItem('token', response.data.token);
-        if (response.data.user.role === 'Admin') {
-          navigate('/admin-dashboard');
+        localStorage.setItem("token", response.data.token);
+        if (response.data.user.role === "Admin") {
+          navigate("/admin-dashboard");
         } else {
-          navigate('/employee-dashboard');
+          navigate("/employee-dashboard");
         }
       }
     } catch (error) {
       if (error.response && !error.response.data.error) {
         setError(error.response.data.error);
       } else {
-        setError(error.message || 'server error');
+        setError(error.message || "server error");
       }
     } finally {
       setloading(false);
@@ -52,7 +52,7 @@ function Login() {
 
   return (
     <div className="login">
-      <h2>Employee Management system Login</h2>
+      <h2>Dhahabu Employee Management system Login</h2>
 
       <form className="login-container" onSubmit={handleSubmit}>
         <h3>LOGIN</h3>
@@ -81,8 +81,8 @@ function Login() {
           />
         </div>
         <h6>
-          Don{"'"}t have an Account?{' '}
-          <Link to={'/register'} className="forgot-password-link">
+          Don{"'"}t have an Account?{" "}
+          <Link to={"/register"} className="forgot-password-link">
             Sign Up
           </Link>
         </h6>
