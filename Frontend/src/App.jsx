@@ -3,24 +3,25 @@ import {
   Route,
   Routes,
   Navigate,
-} from 'react-router-dom';
-import Login from './pages/Login';
-import AdminDashboard from './pages/AdminDashboard';
-import EmployeeDashboard from './pages/EmployeeDashboard';
-import PrivateRoutes from './utils/PrivateRoutes';
-import RoleBaseRoutes from './utils/RoleBaseRoutes';
-import AdminSummary from './components/Dashboard/AdminSummary';
-import Departments from './components/Departments/Departments';
-import Employee from './components/Employee/Employee';
-import SalaryForm from './components/Salary/SalaryForm';
-import SalaryTable from './components/Salary/SalaryTable';
-import EmployeeProfile from './components/Employee/EmployeeProfile';
-import EmpSummary from './components/EmployeeDashboard/EmpSummary';
-import EmpProfile from './components/EmployeeDashboard/EmpProfile';
-import EmpSalaryTable from './components/Salary/EmpSalaryTable';
-import Register from './pages/Register';
-import LeaveRequestsAdmin from './components/Employee/LeaveRequest/LeaveRequestsAdmin';
-import LeaveRequestForm from './components/Employee/LeaveRequest/LeaveRequestForm';
+} from "react-router-dom";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import PrivateRoutes from "./utils/PrivateRoutes";
+import RoleBaseRoutes from "./utils/RoleBaseRoutes";
+import AdminSummary from "./components/Dashboard/AdminSummary";
+import Departments from "./components/Departments/Departments";
+import Employee from "./components/Employee/Employee";
+import SalaryForm from "./components/Salary/SalaryForm";
+import SalaryTable from "./components/Salary/SalaryTable";
+import EmployeeProfile from "./components/Employee/EmployeeProfile";
+import EmpSummary from "./components/EmployeeDashboard/EmpSummary";
+import EmpProfile from "./components/EmployeeDashboard/EmpProfile";
+import EmpSalaryTable from "./components/Salary/EmpSalaryTable";
+import Register from "./pages/Register";
+import LeaveRequestsAdmin from "./components/Employee/LeaveRequest/LeaveRequestsAdmin";
+import LeaveRequestForm from "./components/Employee/LeaveRequest/LeaveRequestForm";
+import EmpSalaryTable2 from "./components/EmployeeDashboard/EmpSalaryTable2";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
           path="/admin-dashboard"
           element={
             <PrivateRoutes>
-              <RoleBaseRoutes requiredRole={['admin']}>
+              <RoleBaseRoutes requiredRole={["admin"]}>
                 <AdminDashboard />
               </RoleBaseRoutes>
             </PrivateRoutes>
@@ -68,7 +69,7 @@ function App() {
           path="/employee-dashboard"
           element={
             <PrivateRoutes>
-              <RoleBaseRoutes requiredRole={['admin', 'employee']}>
+              <RoleBaseRoutes requiredRole={["admin", "employee"]}>
                 <EmployeeDashboard />
               </RoleBaseRoutes>
             </PrivateRoutes>
@@ -78,6 +79,10 @@ function App() {
           <Route
             path="/employee-dashboard/employee-profile/:id"
             element={<EmpProfile />}
+          />
+          <Route
+            path="/employee-dashboard/salaries/:employeeId"
+            element={<EmpSalaryTable2 />}
           />
           <Route
             path="/employee-dashboard/leaveRequest"

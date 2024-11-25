@@ -1,27 +1,27 @@
-import { useState, useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
-import Modal from 'react-modal';
-import './Employee.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import apiRequest from '../../lib/apiRequest';
-import LeaveRequestsPopup from './LeaveRequest/LeaveRequestsPopup';
-import { InfinitySpin } from 'react-loader-spinner';
+import { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
+import Modal from "react-modal";
+import "./Employee.scss";
+import { Link, useNavigate } from "react-router-dom";
+import apiRequest from "../../lib/apiRequest";
+import LeaveRequestsPopup from "./LeaveRequest/LeaveRequestsPopup";
+import { InfinitySpin } from "react-loader-spinner";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
-    name: '',
-    dob: '',
-    department: '',
-    email: '',
-    password: '',
+    name: "",
+    dob: "",
+    department: "",
+    email: "",
+    password: "",
   });
   const employeesPerPage = 5;
   const navigate = useNavigate();
@@ -33,10 +33,10 @@ const Employee = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const response = await apiRequest.get('/employee/employees');
+      const response = await apiRequest.get("/employee/employees");
       setEmployees(response.data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error("Error fetching employees:", error);
     } finally {
       setLoading(false);
     }
@@ -70,18 +70,18 @@ const Employee = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      await apiRequest.post('/employee/postEmployee', newEmployee);
+      await apiRequest.post("/employee/postEmployee", newEmployee);
       setNewEmployee({
-        name: '',
-        dob: '',
-        department: '',
-        email: '',
-        password: '',
+        name: "",
+        dob: "",
+        department: "",
+        email: "",
+        password: "",
       });
       setIsModalOpen(false);
       await fetchEmployees(); // Refresh the list after adding
     } catch (error) {
-      console.error('Error adding employee:', error);
+      console.error("Error adding employee:", error);
     }
   };
 
@@ -100,14 +100,14 @@ const Employee = () => {
       );
       setEditingEmployee(null);
       setNewEmployee({
-        name: '',
-        dob: '',
-        department: '',
+        name: "",
+        dob: "",
+        department: "",
       });
       setIsModalOpen(false);
       await fetchEmployees(); // Refresh the list after updating
     } catch (error) {
-      console.error('Error updating employee:', error);
+      console.error("Error updating employee:", error);
     }
   };
 
@@ -116,7 +116,7 @@ const Employee = () => {
       await apiRequest.delete(`/employee/deleteEmployee/${id}`);
       await fetchEmployees(); // Refresh the list after deleting
     } catch (error) {
-      console.error('Error deleting employee:', error);
+      console.error("Error deleting employee:", error);
     }
   };
 
@@ -137,7 +137,7 @@ const Employee = () => {
         setEmployeeLeaveDetails(response.data);
       }
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error("Error fetching employees:", error);
     } finally {
       setLoading(false);
     }
@@ -152,11 +152,11 @@ const Employee = () => {
             setIsModalOpen(true);
             setEditingEmployee(null);
             setNewEmployee({
-              name: '',
-              dob: '',
-              department: '',
-              email: '',
-              password: '',
+              name: "",
+              dob: "",
+              department: "",
+              email: "",
+              password: "",
             });
           }}
         >
@@ -221,12 +221,12 @@ const Employee = () => {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'Previous'}
-        nextLabel={'Next'}
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
         pageCount={Math.ceil(filteredEmployees.length / employeesPerPage)}
         onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        activeClassName={'active'}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
       />
       {displayLeaveDetails && (
         <div className="EmployeeLeaveDataPopop">
@@ -254,7 +254,7 @@ const Employee = () => {
         className="modal"
         overlayClassName="modal-overlay"
       >
-        <h3>{editingEmployee ? 'Edit Employee' : 'Add New Employee'}</h3>
+        <h3>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h3>
         <form
           onSubmit={editingEmployee ? handleUpdateEmployee : handleAddEmployee}
           className="modal-form"
@@ -305,7 +305,7 @@ const Employee = () => {
             required
           />
           <button type="submit">
-            {editingEmployee ? 'Update Employee' : 'Add Employee'}
+            {editingEmployee ? "Update Employee" : "Add Employee"}
           </button>
           <button type="button" onClick={() => setIsModalOpen(false)}>
             Close
