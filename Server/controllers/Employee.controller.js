@@ -1,13 +1,15 @@
-import mongoose from 'mongoose';
-import User from '../models/userModel.js';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import LeaveRequest from '../models/LeaveRequest.js';
+import mongoose from "mongoose";
+import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import LeaveRequest from "../models/LeaveRequest.js";
+import Salary from "../models/salaryModel.js";
+import Department from "../models/DepartmentModel.js";
 
 // Get all employees
 const getAllEmployees = async (req, res) => {
   try {
-    const employees = await User.find({ role: 'Employee' });
+    const employees = await User.find({ role: "Employee" });
     res.json(employees);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -19,7 +21,7 @@ const getEmployeeById = async (req, res) => {
   const { id } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: 'Employee not found' });
+      return res.status(404).json({ message: "Employee not found" });
     }
     const fetchedEmployee = await User.findById(id);
 
@@ -52,7 +54,7 @@ const createEmployee = async (req, res) => {
       department,
       email,
       password: hashedPass,
-      role: 'Employee',
+      role: "Employee",
     });
     await employee.save();
     res.json(employee);
@@ -74,7 +76,7 @@ const updateEmployee = async (req, res) => {
     );
 
     if (!employee) {
-      return res.status(404).json({ message: 'Employee not found' });
+      return res.status(404).json({ message: "Employee not found" });
     }
 
     res.json(employee);
@@ -91,10 +93,10 @@ const deleteEmployee = async (req, res) => {
     const employee = await User.findByIdAndDelete(id);
 
     if (!employee) {
-      return res.status(404).json({ message: 'Employee not found' });
+      return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json({ message: 'Employee deleted successfully' });
+    res.json({ message: "Employee deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -108,15 +110,15 @@ const PostLeaveRequests = async (req, res) => {
   try {
     // Validate the incoming data
     if (!leaveType || !startDate || !endDate || !reason) {
-      return res.status(400).json({ message: 'All fields are required.' });
+      return res.status(400).json({ message: "All fields are required." });
     }
 
     // Validate leave type
-    const validLeaveTypes = ['annual', 'sick', 'personal', 'unpaid'];
+    const validLeaveTypes = ["annual", "sick", "personal", "unpaid"];
     if (!validLeaveTypes.includes(leaveType)) {
       return res.status(400).json({
         message:
-          'Invalid leave type. Must be one of: annual, sick, personal, or unpaid',
+          "Invalid leave type. Must be one of: annual, sick, personal, or unpaid",
       });
     }
 
@@ -128,21 +130,21 @@ const PostLeaveRequests = async (req, res) => {
     // Check if dates are valid
     if (isNaN(startDateObj.getTime()) || isNaN(endDateObj.getTime())) {
       return res.status(400).json({
-        message: 'Invalid date format',
+        message: "Invalid date format",
       });
     }
 
     // Check if start date is in the past
     if (startDateObj < today.setHours(0, 0, 0, 0)) {
       return res.status(400).json({
-        message: 'Start date cannot be in the past',
+        message: "Start date cannot be in the past",
       });
     }
 
     // Check if end date is before start date
     if (endDateObj < startDateObj) {
       return res.status(400).json({
-        message: 'End date must be after start date',
+        message: "End date must be after start date",
       });
     }
 
@@ -175,16 +177,16 @@ const PostLeaveRequests = async (req, res) => {
 
     // Respond with the saved leave request
     return res.status(201).json({
-      message: 'Leave request submitted successfully.',
+      message: "Leave request submitted successfully.",
       leaveRequest: newLeaveRequest,
     });
   } catch (error) {
-    console.error('Error creating leave request:', error);
+    console.error("Error creating leave request:", error);
     return res.status(500).json({
       message: {
         error:
           error.message ||
-          'An error occurred while submitting the leave request.',
+          "An error occurred while submitting the leave request.",
       },
     });
   }
@@ -196,14 +198,14 @@ const GetleaveRequests = async (req, res) => {
     // Extract query parameters
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const limit = Math.max(1, parseInt(req.query.limit, 5) || 5);
-    const status = req.query.status || 'all';
+    const status = req.query.status || "all";
 
     // Calculate skip value for pagination
     const skip = (page - 1) * limit;
 
     // Build filter query
     let filterQuery = {};
-    if (status !== 'all') {
+    if (status !== "all") {
       filterQuery.status = status;
     }
 
@@ -212,8 +214,8 @@ const GetleaveRequests = async (req, res) => {
 
     // Fetch paginated and filtered leave requests
     const leaveRequests = await LeaveRequest.find(filterQuery)
-      .populate('employeeId', 'name email department')
-      .populate('reviewedBy', 'name email ')
+      .populate("employeeId", "name email department")
+      .populate("reviewedBy", "name email ")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
@@ -254,9 +256,9 @@ const GetleaveRequests = async (req, res) => {
       itemsPerPage: limit,
     });
   } catch (error) {
-    console.error('Error getting leave requests: ', error.message);
+    console.error("Error getting leave requests: ", error.message);
     return res.status(500).json({
-      message: error.message || 'Error fetching leave requests!',
+      message: error.message || "Error fetching leave requests!",
     });
   }
 };
@@ -267,15 +269,15 @@ export const getEmployeeLeaveRequests = async (req, res) => {
     const { employeeId } = req.params;
 
     const leaveRequests = await LeaveRequest.find({ employeeId: employeeId })
-      .populate('employeeId', 'name email department')
-      .populate('reviewedBy', 'name email ')
+      .populate("employeeId", "name email department")
+      .populate("reviewedBy", "name email ")
       .sort({ createdAt: -1 })
       .lean();
 
     res.status(200).json(leaveRequests);
   } catch (error) {
     res.status(500).json({
-      message: 'Error retrieving leave requests',
+      message: "Error retrieving leave requests",
       error: error.message,
     });
   }
@@ -288,11 +290,11 @@ const UpdateLeaveRequestStatus = async (req, res) => {
     const { status } = req.body;
 
     // Validate status
-    const validStatuses = ['Pending', 'Approved', 'Rejected'];
+    const validStatuses = ["Pending", "Approved", "Rejected"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
         message:
-          'Invalid status. Status must be pending, approved, or rejected.',
+          "Invalid status. Status must be pending, approved, or rejected.",
       });
     }
 
@@ -307,12 +309,12 @@ const UpdateLeaveRequestStatus = async (req, res) => {
       },
       { new: true }
     )
-      .populate('employeeId', 'name email department')
-      .populate('reviewedBy', 'name email ');
+      .populate("employeeId", "name email department")
+      .populate("reviewedBy", "name email ");
 
     if (!updatedRequest) {
       return res.status(404).json({
-        message: 'Leave request not found',
+        message: "Leave request not found",
       });
     }
 
@@ -333,9 +335,9 @@ const UpdateLeaveRequestStatus = async (req, res) => {
 
     res.status(200).json(transformedRequest);
   } catch (error) {
-    console.error('Error updating leave request status: ', error.message);
+    console.error("Error updating leave request status: ", error.message);
     return res.status(500).json({
-      message: error.message || 'Error updating leave request status!',
+      message: error.message || "Error updating leave request status!",
     });
   }
 };
@@ -346,16 +348,33 @@ const deleteLeaveRequest = async (req, res) => {
   try {
     const deletedLeave = await LeaveRequest.findByIdAndDelete(id);
     if (!deletedLeave) {
-      return res.status(404).json({ message: 'No such leave to delete!' });
+      return res.status(404).json({ message: "No such leave to delete!" });
     }
     res.status(200).json(deletedLeave);
   } catch (error) {
     res
       .status(500)
-      .json({ message: error.message || 'Error deleting Leave Request!' });
+      .json({ message: error.message || "Error deleting Leave Request!" });
   }
 };
 
+export const generalData = async (req, res) => {
+  try {
+    const employees = await User.find({ role: "Employee" });
+    const salaries = await Salary.find();
+    const departments = await Department.find();
+
+    const transformedRequest = {
+      employees: employees.length > 0 ? employees : [],
+      salaries: salaries.length > 0 ? salaries : [],
+      departments: departments.length > 0 ? departments : [],
+    };
+
+    res.status(200).json(transformedRequest);
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Error fetching data!" });
+  }
+};
 export {
   getAllEmployees,
   createEmployee,
