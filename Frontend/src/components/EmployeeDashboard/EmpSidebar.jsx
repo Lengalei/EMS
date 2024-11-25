@@ -43,7 +43,7 @@ const EmpSidebar = () => {
           </li>
           <li>
             <NavLink
-              to={`/admin-dashboard/salaries/${user._id}`}
+              to={`/employee-dashboard/salaries/${user._id}`}
               activeClassName="active"
             >
               <FaMoneyBillWave className="sidebar__icon" />
