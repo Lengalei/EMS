@@ -21,14 +21,14 @@ $transition-speed: 0.3s;
 
 .leave-requests-container {
   font-family: "Inter", sans-serif;
-  border: 2px solid red;
+  // border: 2px solid red;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 100%;
   width: 50%;
   max-width: 90%;
   justify-content: flex-start;
@@ -65,7 +65,7 @@ $transition-speed: 0.3s;
     border-bottom: 1px solid $color-border;
     padding: 4px;
     width: 46%;
-    height: 40%;
+    height: auto;
     margin: 0px 5px;
     border: 1px solid rgb(233, 227, 227);
     border-radius: 4px;

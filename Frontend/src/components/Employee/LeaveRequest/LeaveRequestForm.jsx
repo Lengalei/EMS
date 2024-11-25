@@ -1,23 +1,23 @@
 /* eslint-disable react/prop-types */
 // LeaveRequestForm.jsx
-import { useState } from 'react';
-import { Calendar } from 'lucide-react';
-import './LeaveRequestForm.scss';
-import apiRequest from '../../../lib/apiRequest';
-import { useAuth } from '../../../context/authContext';
-import EmployeeLeaveRequests from './EmployeeLeaveRequests';
+import { useState } from "react";
+import { Calendar } from "lucide-react";
+import "./LeaveRequestForm.scss";
+import apiRequest from "../../../lib/apiRequest";
+import { useAuth } from "../../../context/authContext";
+import EmployeeLeaveRequests from "./EmployeeLeaveRequests";
 
 const LeaveRequestForm = () => {
   const { user: selectedEmployee } = useAuth();
   const [formData, setFormData] = useState({
-    leaveType: '',
-    startDate: '',
-    endDate: '',
-    reason: '',
+    leaveType: "",
+    startDate: "",
+    endDate: "",
+    reason: "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +37,7 @@ const LeaveRequestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
     setSuccess(false);
     try {
       const response = await apiRequest.post(
@@ -45,14 +45,14 @@ const LeaveRequestForm = () => {
         formData
       );
       if (!response.status) {
-        throw new Error('Failed to submit leave request');
+        throw new Error("Failed to submit leave request");
       }
       setSuccess(true);
       setFormData({
-        leaveType: '',
-        startDate: '',
-        endDate: '',
-        reason: '',
+        leaveType: "",
+        startDate: "",
+        endDate: "",
+        reason: "",
       });
     } catch (err) {
       setError(err.message);
@@ -67,10 +67,7 @@ const LeaveRequestForm = () => {
         <div className="form-card">
           <div className="form-header">
             <div className="holderH2CloseBtn">
-              <h2>
-                <Calendar className="calendar-icon" />
-                {selectedEmployee.name} Leave Request Form
-              </h2>
+              <h2>{selectedEmployee.name} Leave Request Form</h2>
             </div>
 
             <p>Submit your leave request for approval</p>
@@ -146,10 +143,10 @@ const LeaveRequestForm = () => {
 
             <button
               type="submit"
-              className={`submit-button ${loading ? 'loading' : ''}`}
+              className={`submit-button ${loading ? "loading" : ""}`}
               disabled={loading}
             >
-              {loading ? 'Submitting...' : 'Submit Leave Request'}
+              {loading ? "Submitting..." : "Submit Leave Request"}
             </button>
           </form>
         </div>
