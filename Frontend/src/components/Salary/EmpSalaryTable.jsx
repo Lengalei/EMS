@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './SalaryTable.scss';
-import apiRequest from '../../lib/apiRequest';
-import { useAuth } from '../../context/authContext';
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./SalaryTable.scss";
+import apiRequest from "../../lib/apiRequest";
+import { useAuth } from "../../context/authContext";
 
 const EmpSalaryTable = () => {
   const { employeeId } = useParams();
@@ -24,7 +24,7 @@ const EmpSalaryTable = () => {
       const response = await apiRequest.get(`/salaries/salaries/${employeeId}`);
       setSalaries(response.data);
     } catch (error) {
-      console.error('Error fetching salaries:', error);
+      console.error("Error fetching salaries:", error);
     } finally {
       setLoading(false);
     }
@@ -35,21 +35,21 @@ const EmpSalaryTable = () => {
       const response = await apiRequest.get(`/employee/${employeeId}`);
       setEmployeeDetails(response.data);
     } catch (error) {
-      console.error('Error fetching employee details:', error);
+      console.error("Error fetching employee details:", error);
     }
   };
 
   const fetchDepartments = async () => {
     try {
-      const response = await apiRequest.get('/department/getAllDepartments');
+      const response = await apiRequest.get("/department/getAllDepartments");
       setDepartments(response.data);
     } catch (error) {
-      console.error('Error fetching departments:', error);
+      console.error("Error fetching departments:", error);
     }
   };
 
   const { user } = useAuth();
-  console.log('userSalary: ', user);
+  console.log("userSalary: ", user);
   return (
     <div className="salary-table-page">
       <h2>Salaries for {salaries && salaries[0]?.employee?.name}</h2>
@@ -91,7 +91,7 @@ const EmpSalaryTable = () => {
 
       <button
         className="add-salary-btn"
-        onClick={() => navigate(`/admin-dashboard/add-salary/${employeeId}`)}
+        onClick={() => navigate(`/admin-dashboard/salary`)}
       >
         Add Salary
       </button>
