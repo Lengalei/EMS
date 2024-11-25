@@ -1,13 +1,13 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaUser,
   FaCalendarAlt,
   FaMoneyBillWave,
   FaCog,
-} from 'react-icons/fa';
-import '../sidebar/Sidebar.scss';
-import { useAuth } from '../../context/authContext';
+} from "react-icons/fa";
+import "../sidebar/Sidebar.scss";
+import { useAuth } from "../../context/authContext";
 
 const EmpSidebar = () => {
   const { user } = useAuth();
@@ -42,7 +42,10 @@ const EmpSidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/employee-dashboard/salary" activeClassName="active">
+            <NavLink
+              to={`/admin-dashboard/salaries/${user._id}`}
+              activeClassName="active"
+            >
               <FaMoneyBillWave className="sidebar__icon" />
               Salary
             </NavLink>
