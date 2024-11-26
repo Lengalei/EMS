@@ -95,7 +95,7 @@ const Employee = () => {
     e.preventDefault();
     try {
       await apiRequest.put(
-        `/employees/updateEmployee/${editingEmployee._id}`,
+        `/employee/updateEmployee/${editingEmployee._id}`,
         newEmployee
       );
       setEditingEmployee(null);
@@ -295,15 +295,22 @@ const Employee = () => {
             }
             required
           />
-          <label>Password</label>
-          <input
-            type="text"
-            value={newEmployee.password}
-            onChange={(e) =>
-              setNewEmployee({ ...newEmployee, password: e.target.value })
-            }
-            required
-          />
+          {editingEmployee ? (
+            ""
+          ) : (
+            <>
+              <label>Password</label>
+              <input
+                type="password"
+                value={newEmployee.password}
+                onChange={(e) =>
+                  setNewEmployee({ ...newEmployee, password: e.target.value })
+                }
+                required
+              />
+            </>
+          )}
+
           <button type="submit">
             {editingEmployee ? "Update Employee" : "Add Employee"}
           </button>
