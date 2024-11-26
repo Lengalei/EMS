@@ -51,7 +51,7 @@ const EmpSidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/settings" activeClassName="active">
+            <NavLink to="/employee-dashboard/settings" activeClassName="active">
               <FaCog className="sidebar__icon" />
               Settings
             </NavLink>
