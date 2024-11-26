@@ -80,12 +80,12 @@ function Login() {
             }}
           />
         </div>
-        <h6>
+        {/* <h6>
           Don{"'"}t have an Account?{" "}
           <Link to={"/register"} className="forgot-password-link">
             Sign Up
           </Link>
-        </h6>
+        </h6> */}
         <button className="LoginBtn">Login</button>
       </form>
       {loading && (
