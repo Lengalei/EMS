@@ -22,6 +22,7 @@ import Register from "./pages/Register";
 import LeaveRequestsAdmin from "./components/Employee/LeaveRequest/LeaveRequestsAdmin";
 import LeaveRequestForm from "./components/Employee/LeaveRequest/LeaveRequestForm";
 import EmpSalaryTable2 from "./components/EmployeeDashboard/EmpSalaryTable2";
+import Settings from "./components/settings/settings";
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
             path="/employee-dashboard/employee-profile/:id"
             element={<EmpProfile />}
           />
+          <Route path="/employee-dashboard/settings" element={<Settings />} />
           <Route
             path="/employee-dashboard/salaries/:employeeId"
             element={<EmpSalaryTable2 />}
