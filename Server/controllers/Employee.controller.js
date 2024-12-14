@@ -220,10 +220,11 @@ const GetleaveRequests = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
+    console.log(leaveRequests);
     // Transform data to match frontend expectations
     const transformedRequests = leaveRequests.map((request) => ({
       id: request._id,
-      employeeName: request.employeeId.name,
+      employeeName: request.employeeId.name || "Employee",
       employeeId: request.employeeId._id,
       department: request.employeeId.department,
       leaveType: request.leaveType,

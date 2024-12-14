@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // LeaveRequestsAdmin.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Calendar,
   Check,
@@ -8,14 +8,14 @@ import {
   Clock,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react';
-import Pagination from 'react-js-pagination';
-import './LeaveRequestsAdmin.scss';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import { FaTrashAlt } from 'react-icons/fa';
-import apiRequest from '../../../lib/apiRequest';
-import { InfinitySpin } from 'react-loader-spinner';
+} from "lucide-react";
+import Pagination from "react-js-pagination";
+import "./LeaveRequestsAdmin.scss";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { FaTrashAlt } from "react-icons/fa";
+import apiRequest from "../../../lib/apiRequest";
+import { InfinitySpin } from "react-loader-spinner";
 
 // Configure axios to include credentials
 axios.defaults.withCredentials = true;
@@ -26,7 +26,7 @@ const LeaveRequestsAdmin = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRequests, setTotalRequests] = useState(0);
   const [itemsPerPage] = useState(5);
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     fetchRequests(currentPage);
@@ -40,13 +40,13 @@ const LeaveRequestsAdmin = () => {
         `/employee/getleaveRequests?page=${page}&status=${filterStatus}`
       );
       if (response.status) {
-        setRequests(response.data.requests);
-        setTotalRequests(response.data.total);
+        setRequests(response?.data?.requests);
+        setTotalRequests(response?.data?.total);
       }
     } catch (err) {
-      console.log(err.message || 'Error fetching leave Requests!');
+      console.log(err.message || "Error fetching leave Requests!");
       toast.error(
-        err.response.data.message || 'Error fetching leave Requests!'
+        err.response.data.message || "Error fetching leave Requests!"
       );
     } finally {
       setLoading(false);
@@ -61,17 +61,17 @@ const LeaveRequestsAdmin = () => {
         { status: newStatus }
       );
 
-      if (!response.ok) throw new Error('Failed to update status');
+      if (!response.ok) throw new Error("Failed to update status");
 
       // Update local state
       await fetchRequests(currentPage);
       toast.success(`Status updated to ${newStatus}`);
     } catch (err) {
       toast.error(
-        err.response.data.message || 'Error fetching leave Requests!'
+        err.response.data.message || "Error fetching leave Requests!"
       );
       console.log(
-        err.response.data.message || 'Error fetching leave Requests!'
+        err.response.data.message || "Error fetching leave Requests!"
       );
     } finally {
       setLoading(false);
@@ -80,9 +80,9 @@ const LeaveRequestsAdmin = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'Approved':
+      case "Approved":
         return <Check className="status-icon approved" />;
-      case 'Rejected':
+      case "Rejected":
         return <X className="status-icon rejected" />;
       default:
         return <Clock className="status-icon pending" />;
@@ -116,38 +116,38 @@ const LeaveRequestsAdmin = () => {
         <div className="reason-popup-content">
           <div className="reason-popup-details">
             <p>
-              <strong>Employee Name:</strong> {request?.employeeName || 'N/A'}
+              <strong>Employee Name:</strong> {request?.employeeName || "N/A"}
             </p>
             <p>
-              <strong>Employee ID:</strong> {request?.employeeId || 'N/A'}
+              <strong>Employee ID:</strong> {request?.employeeId || "N/A"}
             </p>
             <p>
-              <strong>Leave Type:</strong> {request?.leaveType || 'N/A'}
+              <strong>Leave Type:</strong> {request?.leaveType || "N/A"}
             </p>
             <p>
-              <strong>Duration:</strong>{' '}
+              <strong>Duration:</strong>{" "}
               {request?.startDate && request?.endDate
                 ? `${new Date(
                     request?.startDate
                   ).toLocaleDateString()} - ${new Date(
                     request?.endDate
                   ).toLocaleDateString()}`
-                : 'N/A'}
+                : "N/A"}
             </p>
             <p>
-              <strong>Status:</strong> {request?.status || 'N/A'}
+              <strong>Status:</strong> {request?.status || "N/A"}
             </p>
             {request?.reviewedBy && (
               <>
                 <p>
-                  <strong>Reviewed By:</strong>{' '}
-                  {request?.reviewedBy.name || 'N/A'}
+                  <strong>Reviewed By:</strong>{" "}
+                  {request?.reviewedBy.name || "N/A"}
                 </p>
                 <p>
-                  <strong>Reviewed At:</strong>{' '}
+                  <strong>Reviewed At:</strong>{" "}
                   {request?.reviewedAt
                     ? new Date(request?.reviewedAt).toLocaleDateString()
-                    : 'Pending Review'}
+                    : "Pending Review"}
                 </p>
               </>
             )}
@@ -155,7 +155,7 @@ const LeaveRequestsAdmin = () => {
           <div className="reason-popup-reason">
             <h4>Reason for Leave</h4>
             <div className="reason-text">
-              {request?.reason || 'No reason provided.'}
+              {request?.reason || "No reason provided."}
             </div>
           </div>
         </div>
@@ -163,11 +163,11 @@ const LeaveRequestsAdmin = () => {
     </div>
   );
 
-  const [confirmInput, setConfirmInput] = useState('');
+  const [confirmInput, setConfirmInput] = useState("");
   const handleConfirmChange = (e) => {
     setConfirmInput(e.target.value);
   };
-  const [leaveRequestToDelete, setLeaveRequestToDelete] = useState('');
+  const [leaveRequestToDelete, setLeaveRequestToDelete] = useState("");
   const [showDeleteModal, setDeleteModal] = useState(false);
   const handleOpenModal = (request) => {
     setLeaveRequestToDelete(request);
@@ -176,8 +176,8 @@ const LeaveRequestsAdmin = () => {
 
   const handleCloseModal = () => {
     setDeleteModal(false);
-    setConfirmInput('');
-    setLeaveRequestToDelete('');
+    setConfirmInput("");
+    setLeaveRequestToDelete("");
   };
 
   const handleDelete = async (_id) => {
@@ -192,7 +192,7 @@ const LeaveRequestsAdmin = () => {
       }
     } catch (error) {
       console.error(
-        error.response.data.message || 'Error Deleting Leave Request'
+        error.response.data.message || "Error Deleting Leave Request"
       );
     } finally {
       setLoading(false);
@@ -294,15 +294,15 @@ const LeaveRequestsAdmin = () => {
 
                     <td className="actions">
                       <div className="action-buttons">
-                        {request?.status === 'Approved' ? (
-                          ''
+                        {request?.status === "Approved" ? (
+                          ""
                         ) : (
                           <button
                             className="action-btn approve"
                             onClick={() =>
-                              handleStatusChange(request?.id, 'Approved')
+                              handleStatusChange(request?.id, "Approved")
                             }
-                            disabled={request?.status === 'Approved'}
+                            disabled={request?.status === "Approved"}
                           >
                             <Check size={16} />
                             Approve
@@ -311,9 +311,9 @@ const LeaveRequestsAdmin = () => {
                         <button
                           className="action-btn reject"
                           onClick={() =>
-                            handleStatusChange(request?.id, 'Rejected')
+                            handleStatusChange(request?.id, "Rejected")
                           }
-                          disabled={request?.status === 'Rejected'}
+                          disabled={request?.status === "Rejected"}
                         >
                           <X size={16} />
                           Reject
@@ -365,16 +365,16 @@ const LeaveRequestsAdmin = () => {
           <div className="modal-content">
             <h2>Confirm Leave Request Deletion</h2>
             <p className="warning">
-              <strong>Warning:</strong> This action is{' '}
+              <strong>Warning:</strong> This action is{" "}
               <strong>irreversible</strong> . By proceeding, you will
-              permanently delete all leave Requesst associated with{' '}
+              permanently delete all leave Requesst associated with{" "}
               <strong>{leaveRequestToDelete.employeeName}</strong>, including:
             </p>
             <ul className="delete-consequences">
               <li>This Leave Request made by this Employee.</li>
             </ul>
             <p>
-              To confirm, please type:{' '}
+              To confirm, please type:{" "}
               <strong>delete {leaveRequestToDelete.leaveType} Leave</strong>
             </p>
             <input
