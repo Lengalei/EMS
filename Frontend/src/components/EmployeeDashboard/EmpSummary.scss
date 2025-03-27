@@ -1,0 +1,138 @@
+.dashboard-container {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
+  background: #f4f6f9;
+
+  .welcome-card {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+
+    .profile-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+    }
+
+    .dashCardContent {
+      p {
+        font-size: 18px;
+        color: #666;
+      }
+
+      h2 {
+        font-size: 24px;
+        color: #333;
+      }
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      .stat-icon {
+        font-size: 30px;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 22px;
+        color: #333;
+      }
+
+      p {
+        font-size: 14px;
+        color: #666;
+      }
+    }
+
+    .approved .stat-icon {
+      color: #28a745;
+    }
+
+    .rejected .stat-icon {
+      color: #dc3545;
+    }
+
+    .pending .stat-icon {
+      color: #ffc107;
+    }
+
+    .salary .stat-icon {
+      color: #17a2b8;
+    }
+  }
+
+  .leave-summary {
+    margin-top: 30px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+    h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+  }
+
+  .events-section {
+    margin-top: 30px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+    h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        display: flex;
+        align-items: center;
+        background: #f8f9fa;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 5px;
+
+        .event-icon {
+          font-size: 18px;
+          color: #007bff;
+          margin-right: 10px;
+        }
+
+        span {
+          font-size: 14px;
+          color: #333;
+        }
+      }
+    }
+  }
+}

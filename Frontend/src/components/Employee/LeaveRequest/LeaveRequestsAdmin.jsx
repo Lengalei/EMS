@@ -13,6 +13,7 @@ import Pagination from "react-js-pagination";
 import "./LeaveRequestsAdmin.scss";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the default toast styles
 import { FaTrashAlt } from "react-icons/fa";
 import apiRequest from "../../../lib/apiRequest";
 import { InfinitySpin } from "react-loader-spinner";
@@ -22,7 +23,7 @@ axios.defaults.withCredentials = true;
 
 const LeaveRequestsAdmin = () => {
   const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRequests, setTotalRequests] = useState(0);
   const [itemsPerPage] = useState(5);
@@ -35,7 +36,6 @@ const LeaveRequestsAdmin = () => {
   const fetchRequests = async (page) => {
     setLoading(true);
     try {
-      // Replace with your actual API endpoint
       const response = await apiRequest.get(
         `/employee/getleaveRequests?page=${page}&status=${filterStatus}`
       );
@@ -44,9 +44,12 @@ const LeaveRequestsAdmin = () => {
         setTotalRequests(response?.data?.total);
       }
     } catch (err) {
-      console.log(err.message || "Error fetching leave Requests!");
+      console.error(err.message || "Error fetching leave requests!");
       toast.error(
-        err.response.data.message || "Error fetching leave Requests!"
+        err.response?.data?.message || "Error fetching leave requests!",
+        {
+          className: "custom-toast",
+        }
       );
     } finally {
       setLoading(false);
@@ -61,17 +64,21 @@ const LeaveRequestsAdmin = () => {
         { status: newStatus }
       );
 
-      if (!response.ok) throw new Error("Failed to update status");
-
-      // Update local state
-      await fetchRequests(currentPage);
-      toast.success(`Status updated to ${newStatus}`);
+      if (response.status) {
+        await fetchRequests(currentPage);
+        toast.success(`Status updated to ${newStatus}!`, {
+          className: "custom-toast",
+        });
+      } else {
+        throw new Error("Failed to update status");
+      }
     } catch (err) {
+      console.error("Error updating leave request:", err);
       toast.error(
-        err.response.data.message || "Error fetching leave Requests!"
-      );
-      console.log(
-        err.response.data.message || "Error fetching leave Requests!"
+        err.response?.data?.message || "Error updating leave request!",
+        {
+          className: "custom-toast",
+        }
       );
     } finally {
       setLoading(false);
@@ -110,7 +117,7 @@ const LeaveRequestsAdmin = () => {
         <div className="reason-popup-header">
           <h3>Leave Request Details</h3>
           <button className="close-popup-btn" onClick={onClose}>
-            &times;
+            ×
           </button>
         </div>
         <div className="reason-popup-content">
@@ -189,15 +196,25 @@ const LeaveRequestsAdmin = () => {
       if (res.status) {
         await fetchRequests(currentPage);
         handleCloseModal();
+        toast.success("Leave request deleted successfully!", {
+          className: "custom-toast",
+        });
       }
     } catch (error) {
       console.error(
-        error.response.data.message || "Error Deleting Leave Request"
+        error.response?.data?.message || "Error deleting leave request"
+      );
+      toast.error(
+        error.response?.data?.message || "Error deleting leave request!",
+        {
+          className: "custom-toast",
+        }
       );
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="leave-requests-admin">
       <div className="admin-card">
@@ -291,7 +308,6 @@ const LeaveRequestsAdmin = () => {
                         {request?.status}
                       </div>
                     </td>
-
                     <td className="actions">
                       <div className="action-buttons">
                         {request?.status === "Approved" ? (
@@ -358,7 +374,18 @@ const LeaveRequestsAdmin = () => {
           onClose={() => setDisplayReason(false)}
         />
       )}
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
       {showDeleteModal && (
         <div className="confirmation-modal">
@@ -366,8 +393,8 @@ const LeaveRequestsAdmin = () => {
             <h2>Confirm Leave Request Deletion</h2>
             <p className="warning">
               <strong>Warning:</strong> This action is{" "}
-              <strong>irreversible</strong> . By proceeding, you will
-              permanently delete all leave Requesst associated with{" "}
+              <strong>irreversible</strong>. By proceeding, you will permanently
+              delete all leave Requests associated with{" "}
               <strong>{leaveRequestToDelete.employeeName}</strong>, including:
             </p>
             <ul className="delete-consequences">
