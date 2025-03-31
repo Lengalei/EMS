@@ -6,10 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
 import LeaveRequestsPopup from "./LeaveRequest/LeaveRequestsPopup";
 import { InfinitySpin } from "react-loader-spinner";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import default toast styles
-import jsPDF from "jspdf"; // Import jsPDF for PDF generation
-import "jspdf-autotable"; // Import autotable for table support in jsPDF
 
 Modal.setAppElement("#root");
 
@@ -39,69 +35,29 @@ const Employee = () => {
     try {
       const response = await apiRequest.get("/employee/employees");
       setEmployees(response.data);
-      toast.success("Employees fetched successfully!", {
-        className: "custom-toast",
-      });
     } catch (error) {
       console.error("Error fetching employees:", error);
-      toast.error(
-        error.response?.data?.message || "Error fetching employees!",
-        {
-          className: "custom-toast",
-        }
-      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleDownloadEmployees = () => {
-    try {
-      const doc = new jsPDF();
-      doc.text("Employee List", 20, 10);
+    const csvContent = [
+      "S No,Name,DOB,Department,Email",
+      ...employees.map(
+        (emp, index) =>
+          `${index + 1},${emp.name},${new Date(emp.dob).toLocaleDateString()},${
+            emp.department
+          },${emp.email}`
+      ),
+    ].join("\n");
 
-      // Define table columns and rows
-      const columns = ["S No", "Name", "DOB", "Department", "Email"];
-      const rows = employees.map((emp, index) => [
-        index + 1,
-        emp.name,
-        new Date(emp.dob).toLocaleDateString(),
-        emp.department,
-        emp.email,
-      ]);
-
-      // Add table to PDF
-      doc.autoTable({
-        head: [columns],
-        body: rows,
-        startY: 20,
-        theme: "grid",
-        styles: { fontSize: 10 },
-        headStyles: { fillColor: [40, 167, 69] }, // Green header
-      });
-
-      // Save the PDF
-      const pdfBlob = doc.output("blob");
-      const url = window.URL.createObjectURL(pdfBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "employees_list.pdf");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Open the PDF in a new tab for viewing
-      window.open(url, "_blank");
-
-      toast.success("Employee list downloaded as PDF!", {
-        className: "custom-toast",
-      });
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      toast.error("Error downloading employee list!", {
-        className: "custom-toast",
-      });
-    }
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "employees_list.csv";
+    link.click();
   };
 
   const handleSalaryRedirect = (employeeId) => {
@@ -131,7 +87,6 @@ const Employee = () => {
 
   const handleAddEmployee = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
       await apiRequest.post("/employee/postEmployee", newEmployee);
       setNewEmployee({
@@ -143,16 +98,8 @@ const Employee = () => {
       });
       setIsModalOpen(false);
       await fetchEmployees();
-      toast.success("Employee added successfully!", {
-        className: "custom-toast",
-      });
     } catch (error) {
       console.error("Error adding employee:", error);
-      toast.error(error.response?.data?.message || "Error adding employee!", {
-        className: "custom-toast",
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -164,7 +111,6 @@ const Employee = () => {
 
   const handleUpdateEmployee = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
       await apiRequest.put(
         `/employee/updateEmployee/${editingEmployee._id}`,
@@ -175,39 +121,20 @@ const Employee = () => {
         name: "",
         dob: "",
         department: "",
-        email: "",
-        password: "",
       });
       setIsModalOpen(false);
       await fetchEmployees();
-      toast.success("Employee updated successfully!", {
-        className: "custom-toast",
-      });
     } catch (error) {
       console.error("Error updating employee:", error);
-      toast.error(error.response?.data?.message || "Error updating employee!", {
-        className: "custom-toast",
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleDeleteEmployee = async (id) => {
-    setLoading(true);
     try {
       await apiRequest.delete(`/employee/deleteEmployee/${id}`);
       await fetchEmployees();
-      toast.success("Employee deleted successfully!", {
-        className: "custom-toast",
-      });
     } catch (error) {
       console.error("Error deleting employee:", error);
-      toast.error(error.response?.data?.message || "Error deleting employee!", {
-        className: "custom-toast",
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -227,18 +154,9 @@ const Employee = () => {
       );
       if (response.status) {
         setEmployeeLeaveDetails(response.data);
-        toast.success("Leave details fetched successfully!", {
-          className: "custom-toast",
-        });
       }
     } catch (error) {
-      console.error("Error fetching leave details:", error);
-      toast.error(
-        error.response?.data?.message || "Error fetching leave details!",
-        {
-          className: "custom-toast",
-        }
-      );
+      console.error("Error fetching employees:", error);
     } finally {
       setLoading(false);
     }
@@ -344,18 +262,6 @@ const Employee = () => {
           />
         </div>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       {loading && (
         <div className="loader-overlay">
           <InfinitySpin

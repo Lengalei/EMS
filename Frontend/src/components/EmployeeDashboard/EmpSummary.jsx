@@ -17,7 +17,7 @@ const EmpSummary = () => {
   const employeeData = {
     profileImage: "/empprof2.jfif", // Replace with actual image URL
     department: "Software Engineering",
-    salaryEarned: "$5,000",
+    salaryEarned: "ksh 50,000",
     leaves: {
       approved: 5,
       rejected: 1,

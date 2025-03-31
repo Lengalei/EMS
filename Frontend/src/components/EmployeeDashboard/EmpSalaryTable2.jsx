@@ -88,13 +88,6 @@ const EmpSalaryTable2 = () => {
           </tbody>
         </table>
       )}
-
-      <button
-        className="add-salary-btn"
-        onClick={() => navigate(`/admin-dashboard/add-salary/${employeeId}`)}
-      >
-        Add Salary
-      </button>
     </div>
   );
 };

@@ -21,12 +21,14 @@
   }
 
   .salary-table {
-    // width: 100%;
     border-collapse: collapse;
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 
     thead {
       background-color: #ffa62f;
@@ -59,11 +61,11 @@
     }
   }
 
-  .add-salary-btn {
-    display: inline-block;
-    margin-top: 20px;
+  .download-salary-btn {
+    display: block;
+    margin: 20px auto;
     padding: 10px 15px;
-    background-color: #ffa62f;
+    background-color: #28a745;
     color: #fff;
     font-size: 1rem;
     border: none;
@@ -74,7 +76,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: #e59426;
+      background-color: #218838;
     }
   }
 }

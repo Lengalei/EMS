@@ -62,7 +62,7 @@ function App() {
           />
           <Route
             path="/admin-dashboard/salaries/:employeeId"
-            element={<EmpSalaryTable />}
+            element={<EmpSalaryTable2 />}
           />
         </Route>
 
